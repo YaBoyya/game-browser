@@ -1,4 +1,4 @@
-function App() {
+function Home() {
   return (
     <div className='bg-lime-300 p-2 text-center'>
       <h1>Game Browser</h1>
@@ -6,4 +6,4 @@ function App() {
   )
 }
 
-export default App
+export default Home;
