@@ -5,9 +5,11 @@ dotenv.config()
 
 const connectDB = async (): Promise<void> => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI as string);
-
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    const mongoURI = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}:${process.env.MONGODB_DOCKER_PORT}/${process.env.MONGODB_NAME}?authSource=admin`;
+    const conn = await mongoose.connect(mongoURI as string, { 
+      autoCreate: true
+     });
+    console.log(`MongoDB Connected: ${conn.connection.host}:${conn.connection.port}`);
   } catch (error) {
     console.error(`Error: ${error}`);
     process.exit(1);
