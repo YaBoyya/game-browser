@@ -8,11 +8,11 @@ class RequirementsDAO {
     }
 
     async getAllRequirements(): Promise<RequirementsDTO[]> {
-        return await RequirementsModel.find().exec();
+        return await Requirements.find().exec();
     }
 
     async deleteAllRequirements(): Promise<void> {
-        await RequirementsModel.deleteMany({});
+        await Requirements.deleteMany({});
     }
 }
 

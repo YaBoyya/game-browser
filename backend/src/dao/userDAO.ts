@@ -8,6 +8,7 @@ class UserDao {
     }
 
     async getAllUsers(): Promise<UserDTO[]> {
+        // @ts-ignore
         return await User.find().exec();
     }
 

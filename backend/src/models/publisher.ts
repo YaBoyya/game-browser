@@ -10,8 +10,8 @@ export interface PublisherEntity extends Document {
 const PublisherSchema: Schema = new Schema({
     name: { type: String, required: true, unique: true },
     established: { type: Date, required: true },
-    description: { type: String},
-    created_at: { type: Date, default: Date.now }
+    description: { type: String, required: true },
+    created_at: { type: String, required: true }
 });
 
-export const Publisher = mongoose.model<IPublisher>('Publisher', PublisherSchema);
+export const Publisher = mongoose.model<PublisherEntity>('Publisher', PublisherSchema);

@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface GenreEntity {
-    _id: string;
     name: string;
 }
 

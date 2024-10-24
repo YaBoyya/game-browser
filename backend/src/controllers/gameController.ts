@@ -47,7 +47,7 @@ export const createGame = async (req: Request, res: Response) => {
         if (!publisher) {
             publisher = await PublisherDAO.createPublisher(publisherData);
         }
-
+        
         const newGameData = {
             ...gameData,
             genre_id: genre._id,

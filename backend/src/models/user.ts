@@ -1,7 +1,6 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {Schema, Types} from "mongoose";
 
 export interface UserEntity {
-    _id?: string;
     username: string;
     email: string;
     password: string;
@@ -17,7 +16,7 @@ const UserSchema: Schema = new Schema({
     password: { type: String, required: true },
     status: { type: String, enum: ['active', 'inactive', 'banned'], default: 'active' },
     owned_games: [{
-        game_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Games', required: true },
+        game_id: { type: Types.ObjectId, ref: 'Games', required: true },
         added_date: { type: Date }
     }],
     role: { type: String, enum: ['admin', 'user'], default: 'user' },

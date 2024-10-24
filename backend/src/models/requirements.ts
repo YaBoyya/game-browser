@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface RequirementsEntity {
-    _id: string;
     min_cpu: string;
     min_ram: string;
     min_gpu: string;

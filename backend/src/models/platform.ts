@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface PlatformEntity {
-    _id: string;
     name: string;
     description?: string;
 }
