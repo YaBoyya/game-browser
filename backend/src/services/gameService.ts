@@ -1,7 +1,7 @@
 import {Game} from "../models/games";
 import {GamesDTO} from "../dto/gamesDTO";
 
-class GameDao {
+class GameService {
     async createGame(gameData: Partial<GamesDTO>): Promise<GamesDTO> {
         const game = new Game(gameData);
         return await game.save();
@@ -16,4 +16,4 @@ class GameDao {
     }
 }
 
-export default new GameDao();
+export default new GameService();

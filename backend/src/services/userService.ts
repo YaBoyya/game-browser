@@ -1,14 +1,14 @@
 import {UserEntity, User} from "../models/user";
 import {UserDTO} from "../dto/userDTO";
 
-class UserDao {
+class UserService {
     async createUser(userData: Partial<UserDTO>): Promise<UserEntity> {
         const user = new User(userData);
         return await user.save();
     }
 
     async getAllUsers(): Promise<UserDTO[]> {
-        // @ts-ignore
+        // @ts-ignore  TODO: id is a string somewhere in model - FIX
         return await User.find().exec();
     }
 
@@ -17,4 +17,4 @@ class UserDao {
     }
 }
 
-export default new UserDao();
+export default new UserService();

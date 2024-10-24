@@ -1,7 +1,7 @@
 import {RequirementsDTO} from "../dto/requirementsDTO";
 import {Requirements} from "../models/requirements";
 
-class RequirementsDAO {
+class RequirementsService {
     async createRequirements(requirementsData: Partial<RequirementsDTO>): Promise<RequirementsDTO> {
         const requirements = new Requirements(requirementsData);
         return await requirements.save();
@@ -16,4 +16,4 @@ class RequirementsDAO {
     }
 }
 
-export default new RequirementsDAO();
+export default new RequirementsService();

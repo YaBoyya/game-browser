@@ -1,7 +1,7 @@
 import { PublisherDTO } from "../dto/publisherDTO";
 import { Publisher, PublisherEntity } from "../models/publisher";
 
-class PublisherDAO {
+class PublisherService {
     async createPublisher(publisherData: Partial<PublisherDTO>): Promise<PublisherDTO> {
         const publisher = new Publisher(publisherData);
         return await publisher.save();
@@ -16,4 +16,4 @@ class PublisherDAO {
     }
 }
 
-export default new PublisherDAO();
+export default new PublisherService();

@@ -1,7 +1,7 @@
 import {Platform, PlatformEntity} from "../models/platform";
 import {PlatformDTO} from "../dto/platformDTO";
 
-class PlatformDAO {
+class PlatformService {
     async createPlatform(platformData: Partial<PlatformDTO>): Promise<PlatformEntity> {
         const platform = new Platform(platformData);
         return await platform.save();
@@ -16,4 +16,4 @@ class PlatformDAO {
     }
 }
 
-export default new PlatformDAO();
+export default new PlatformService();

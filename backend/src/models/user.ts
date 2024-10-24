@@ -10,6 +10,13 @@ export interface UserEntity {
     created_at?: Date;
 }
 
+interface UserModel extends mongoose.Model<UserEntity> {
+    findByUsername(username: string): Promise<UserEntity | null>;
+    findByEmail(email: string): Promise<UserEntity | null>;
+    findActiveUsers(): Promise<UserEntity[]>;
+    findByGameId(gameId: string): Promise<UserEntity[]>;
+}
+
 const UserSchema: Schema = new Schema({
     username: { type: String, required: true, unique: true},
     email: { type: String, required: true, unique: true},
@@ -23,4 +30,23 @@ const UserSchema: Schema = new Schema({
     created_at: { type: Date, default: Date.now }
 });
 
-export const User = mongoose.model<UserEntity>('User', UserSchema);
+UserSchema.statics.findByUsername = function(username: string): Promise<UserEntity | null> {
+    return this.findOne({ username }).exec();
+};
+
+UserSchema.statics.findByEmail = function(email: string): Promise<UserEntity | null> {
+    return this.findOne({ email }).exec();
+};
+
+UserSchema.statics.findActiveUsers = function(): Promise<UserEntity[]> {
+    return this.find({ status: 'active' }).exec();
+};
+
+UserSchema.statics.findByGameId = function(gameId: string): Promise<UserEntity[]> {
+    return this.find({
+        'owned_games.game_id': new mongoose.Types.ObjectId(gameId)
+    }).exec();
+};
+
+export const User = mongoose.model<UserEntity, UserModel>('User', UserSchema);
+

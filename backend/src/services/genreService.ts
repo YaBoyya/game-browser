@@ -1,7 +1,7 @@
-import { GenreEntity, Genre } from "../models/genre";
-import {GenreDTO} from "../dto/genereDTO";
+import { GenreDTO } from "../dto/genereDTO";
+import { Genre } from "../models/genre";
 
-class GenreDAO {
+class GenreService {
     async createGenre(genreData: Partial<GenreDTO>): Promise<GenreDTO> {
         const genre = new Genre(genreData);
         return await genre.save();
@@ -16,4 +16,4 @@ class GenreDAO {
     }
 }
 
-export default new GenreDAO();
+export default new GenreService();

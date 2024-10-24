@@ -7,6 +7,11 @@ export interface PublisherEntity extends Document {
     created_at: string;
 }
 
+interface PublisherModel extends mongoose.Model<PublisherEntity> {
+    findByName(name: string): Promise<PublisherEntity | null>;
+    findByNameExact(name: string): Promise<PublisherEntity | null>;
+}
+
 const PublisherSchema: Schema = new Schema({
     name: { type: String, required: true, unique: true },
     established: { type: Date, required: true },
@@ -14,4 +19,16 @@ const PublisherSchema: Schema = new Schema({
     created_at: { type: String, required: true }
 });
 
-export const Publisher = mongoose.model<PublisherEntity>('Publisher', PublisherSchema);
+PublisherSchema.statics.findByName = function(name: string): Promise<PublisherEntity | null> {
+    return this.findOne({
+        name: new RegExp(name, 'i')
+    }).exec();
+};
+
+PublisherSchema.statics.findByNameExact = function(name: string): Promise<PublisherEntity | null> {
+    return this.findOne({
+        name: name
+    }).exec();
+};
+
+export const Publisher = mongoose.model<PublisherEntity, PublisherModel>('Publisher', PublisherSchema);

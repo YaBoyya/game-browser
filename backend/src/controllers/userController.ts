@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import UserDao from '../dao/userDAO';
+import UserService from '../dao/userService';
 
 export const createUser = async (req: Request, res: Response) => {
     try {
-      const user = await UserDao.createUser(req.body);
+      const user = await UserService.createUser(req.body);
       res.status(201).json(user);
     } catch (error) {
       res.status(500).json({ message: 'Server error: ' + error });
@@ -12,7 +12,7 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
     try {
-      const users = await UserDao.getAllUsers();
+      const users = await UserService.getAllUsers();
       res.status(200).json(users);
     } catch (error) {
       res.status(500).json({ message: 'Server error: ' + error });
@@ -21,7 +21,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const deleteAllUsers = async (req: Request, res: Response) => {
     try {
-      await UserDao.deleteAllUsers();
+      await UserService.deleteAllUsers();
       res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: 'Server error: ' + error });

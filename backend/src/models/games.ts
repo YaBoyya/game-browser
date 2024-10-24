@@ -11,6 +11,13 @@ export interface GamesEntity {
     created_at: Date;
 }
 
+interface GameModel extends mongoose.Model<GamesEntity> {
+    findByTitle(title: string): Promise<GamesEntity | null>;
+    findByPublisher(publisherId: string): Promise<GamesEntity[]>;
+    findByGenre(genreId: string): Promise<GamesEntity[]>;
+    findByPlatform(platformId: string): Promise<GamesEntity[]>;
+}
+
 const GameSchema: Schema = new Schema({
     title: { type: String, required: true },
     description: { type: String },
@@ -25,4 +32,28 @@ const GameSchema: Schema = new Schema({
     created_at: { type: Date, default: Date.now }
 });
 
-export const Game = mongoose.model<GamesEntity>('Games', GameSchema);
+GameSchema.statics.findByTitle = function(title: string): Promise<GamesEntity | null> {
+    return this.findOne({
+        title: new RegExp(title, 'i')
+    }).exec();
+};
+
+GameSchema.statics.findByPublisher = function(publisherId: string): Promise<GamesEntity[]> {
+    return this.find({
+        publisher_id: new Types.ObjectId(publisherId)
+    }).exec();
+};
+
+GameSchema.statics.findByGenre = function(genreId: string): Promise<GamesEntity[]> {
+    return this.find({
+        genre_id: new Types.ObjectId(genreId)
+    }).exec();
+};
+
+GameSchema.statics.findByPlatform = function(platformId: string): Promise<GamesEntity[]> {
+    return this.find({
+        'platforms.platform_id': new Types.ObjectId(platformId)
+    }).exec();
+};
+
+export const Game = mongoose.model<GamesEntity, GameModel>('Games', GameSchema);
