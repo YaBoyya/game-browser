@@ -2,6 +2,7 @@ import express, {Express, NextFunction, Request, Response} from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
 import userRoutes from "./routes/userRoutes";
+import gamesRoutes from "./routes/gamesRoutes";
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ connectDB();
 
 app.use(express.json());
 app.use('/api/users', userRoutes)
+app.use('/api/games', gamesRoutes)
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`[server]: Docker server is running at port: ${port}`);
