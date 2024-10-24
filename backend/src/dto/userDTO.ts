@@ -1,6 +1,10 @@
 export interface UserDTO {
-  id: string;
-  name: string;
+  _id: string;
+  username: string;
   email: string;
-  createdAt: Date;
+  password: string;
+  status: 'active' | 'inactive';
+  owned_games?: { game_id: string; added_date: Date }[];
+  role: 'admin' | 'user';
+  created_at: Date;
 }
