@@ -1,0 +1,44 @@
+services:
+  backend:
+    container_name: Express
+    build:
+      ./backend
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    ports:
+      - "${BACKEND_LOCAL_PORT}:${BACKEND_DOCKER_PORT}"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./backend:/backend
+  frontend:
+    container_name: React
+    build:
+      ./frontend
+    env_file:
+      - ./.env
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    volumes:
+      - ./frontend:/frontend
+  mongo:
+    container_name: Mongo
+    image: mongo:latest
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_NAME}
+    ports:
+      - "${MONGODB_LOCAL_PORT}:${MONGODB_DOCKER_PORT}"
+    volumes:
+     - db:/data/db
+
+volumes:
+  db:
