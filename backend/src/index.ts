@@ -3,6 +3,7 @@ import express, {Express} from "express";
 import connectDB from "./config/database";
 import userRoutes from "./routes/userRoutes";
 import gamesRoutes from "./routes/gamesRoutes";
+import platformRoutes from "./routes/platformRoutes";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ connectDB();
 app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/games", gamesRoutes);
+app.use("/api/platform", platformRoutes)
 
 app.listen(port, "0.0.0.0", () => {
     console.log(`[server]: Docker server is running at port: ${port}`);
