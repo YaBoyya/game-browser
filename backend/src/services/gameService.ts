@@ -1,13 +1,14 @@
-import {Game} from "../models/games";
-import {GamesDTO} from "../dto/gamesDTO";
+import {GameDTO} from "../dto/gameDTO";
+import {Game} from "../models/game";
 
 class GameService {
-    async createGame(gameData: Partial<GamesDTO>): Promise<GamesDTO> {
+    async createGame(gameData: Partial<GameDTO>): Promise<GameDTO> {
+        gameData.created_at = new Date(Date.now());
         const game = new Game(gameData);
         return await game.save();
     }
 
-    async getAllGames(): Promise<GamesDTO[]> {
+    async getAllGames(): Promise<GameDTO[]> {
         return await Game.find().exec();
     }
 

@@ -1,4 +1,4 @@
-import {GenreDTO} from "../dto/genereDTO";
+import {GenreDTO} from "../dto/genreDTO";
 import {Genre} from "../models/genre";
 
 class GenreService {

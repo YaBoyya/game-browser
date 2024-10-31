@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {GenreDTO} from "../dto/genereDTO";
+import {GenreDTO} from "../dto/genreDTO";
 import {PlatformDTO} from "../dto/platformDTO";
 import {PublisherDTO} from "../dto/publisherDTO";
 import {Genre} from "../models/genre";

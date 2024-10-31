@@ -3,6 +3,7 @@ import {UserDTO} from "../dto/userDTO";
 
 class UserService {
     async createUser(userData: Partial<UserDTO>): Promise<UserEntity> {
+        userData.created_at = new Date(Date.now());
         const user = new User(userData);
         return await user.save();
     }

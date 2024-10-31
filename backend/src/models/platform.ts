@@ -1,6 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, {ObjectId, Schema} from "mongoose";
 
 export interface PlatformEntity {
+    _id: ObjectId;
     name: string;
     description?: string;
 }
@@ -13,32 +14,39 @@ interface PlatformModel extends mongoose.Model<PlatformEntity> {
 }
 
 const PlatformSchema: Schema = new Schema({
-    name: { type: String, required: true, unique: true },
-    description: { type: String }
+    name: {type: String, required: true, unique: true},
+    description: {type: String}
 });
 
-PlatformSchema.statics.findByName = function(name: string): Promise<PlatformEntity | null> {
+PlatformSchema.statics.findByName = function (
+    name: string
+): Promise<PlatformEntity | null> {
     return this.findOne({
-        name: new RegExp(name, 'i')
+        name: new RegExp(name, "i")
     }).exec();
 };
 
-PlatformSchema.statics.findByNameExact = function(name: string): Promise<PlatformEntity | null> {
+PlatformSchema.statics.findByNameExact = function (
+    name: string
+): Promise<PlatformEntity | null> {
     return this.findOne({
         name: name
     }).exec();
 };
 
-PlatformSchema.statics.findAllSorted = function(): Promise<PlatformEntity[]> {
-    return this.find()
-        .sort({ name: 1 })
-        .exec();
+PlatformSchema.statics.findAllSorted = function (): Promise<PlatformEntity[]> {
+    return this.find().sort({name: 1}).exec();
 };
 
-PlatformSchema.statics.findMultipleByNames = function(names: string[]): Promise<PlatformEntity[]> {
+PlatformSchema.statics.findMultipleByNames = function (
+    names: string[]
+): Promise<PlatformEntity[]> {
     return this.find({
-        name: { $in: names }
+        name: {$in: names}
     }).exec();
 };
 
-export const Platform = mongoose.model<PlatformEntity, PlatformModel>('Platforms', PlatformSchema);
+export const Platform = mongoose.model<PlatformEntity, PlatformModel>(
+    "Platforms",
+    PlatformSchema
+);
