@@ -1,5 +1,5 @@
-import { GenreDTO } from "../dto/genereDTO";
-import { Genre } from "../models/genre";
+import {GenreDTO} from "../dto/genereDTO";
+import {Genre} from "../models/genre";
 
 class GenreService {
     async createGenre(genreData: Partial<GenreDTO>): Promise<GenreDTO> {
