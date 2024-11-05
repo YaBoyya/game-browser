@@ -1,8 +1,11 @@
-import { PublisherDTO } from "../dto/publisherDTO";
-import { Publisher, PublisherEntity } from "../models/publisher";
+import {PublisherDTO} from "../dto/publisherDTO";
+import {Publisher} from "../models/publisher";
 
 class PublisherService {
-    async createPublisher(publisherData: Partial<PublisherDTO>): Promise<PublisherDTO> {
+    async createPublisher(
+        publisherData: Partial<PublisherDTO>
+    ): Promise<PublisherDTO> {
+        publisherData.created_at = new Date(Date.now());
         const publisher = new Publisher(publisherData);
         return await publisher.save();
     }

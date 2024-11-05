@@ -1,5 +1,7 @@
+import {ObjectId} from "mongoose";
+
 export interface RequirementsDTO {
-    _id: string;
+    _id: ObjectId;
     min_cpu: string;
     min_ram: string;
     min_gpu: string;

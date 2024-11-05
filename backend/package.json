@@ -1,21 +1,26 @@
 {
-  "name": "game-browser-backend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "build": "npx tsc",
-    "dev": "npx tsx watch --clear-screen=false ./src/index.ts"
-  },
-  "devDependencies": {
-    "tsx": "^4.19.1",
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.7.5",
-    "typescript": "^5.6.2"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "express": "^4.21.0",
-    "mongoose": "^8.7.0"
-  }
+    "name": "game-browser-backend",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "build": "npx tsc",
+        "dev": "npx tsx watch --clear-screen=false ./src/index.ts"
+    },
+    "devDependencies": {
+        "tsx": "^4.19.1",
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.7.5",
+        "typescript": "^5.6.2"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.21.0",
+        "mongoose": "^8.7.0"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "bracketSpacing": false,
+        "trailingComma": "none"
+    }
 }

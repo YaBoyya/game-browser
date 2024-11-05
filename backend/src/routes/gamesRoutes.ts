@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {createGame, getAllGames} from "../controllers/gameController";
 
 const gamesRoutes = express.Router();
