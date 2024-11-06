@@ -4,12 +4,12 @@ import {PlatformDTO} from "../dto/platformDTO";
 import {PublisherDTO} from "../dto/publisherDTO";
 import {Genre} from "../models/genre";
 import {Platform} from "../models/platform";
-import {Publisher} from "../models/publisher";
 import GameService from "../services/gameService";
 import GenreService from "../services/genreService";
 import PlatformService from "../services/platformService";
 import PublisherService from "../services/publisherService";
 import RequirementsService from "../services/requirementsService";
+import { Publisher } from '../models/publisher';
 
 export const createGame = async (req: Request, res: Response) => {
     try {
@@ -39,7 +39,8 @@ export const createGame = async (req: Request, res: Response) => {
                         await PlatformService.createPlatform(platform);
                 }
                 return {
-                    platform_id: existingPlatform._id
+                    platform_id: existingPlatform._id,
+                    release_date: platform.release_date
                 };
             })
         );
@@ -86,11 +87,34 @@ export const createGame = async (req: Request, res: Response) => {
     }
 };
 
+
 export const getAllGames = async (_req: Request, res: Response) => {
     try {
         const games = await GameService.getAllGames();
         res.status(200).json(games);
     } catch (error) {
         res.status(500).json({message: "Server error: " + error});
+    }
+};
+
+export const getFilteredGames = async (req: Request, res: Response) => {
+    try {
+        const gameTitle = req.query.gameTitle as string;
+        const genre = req.query.genre as string;
+        const publisher = req.query.publisher as string;
+        const platform = req.query.platform as string;
+
+        if (!gameTitle && !genre && !publisher && !platform) {
+            return res.status(400).json({ message: "At least one search parameter must be provided" });
+        }
+
+        const games = await GameService.getGameByParam(gameTitle, genre, publisher, platform);
+        if (games.length > 0) {
+            res.status(200).json(games);
+        } else {
+            res.status(404).json({ message: "Game not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Server error: " + error });
     }
 };

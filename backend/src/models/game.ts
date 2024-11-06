@@ -24,7 +24,7 @@ const GameSchema: Schema = new Schema({
     description: {type: String},
     release_date: {type: Date, required: true},
     genre_id: {type: Types.ObjectId, ref: "Genres", required: true},
-    publisher_id: {type: Types.ObjectId, ref: "Publishers", required: true},
+    publisher_id: {type: Types.ObjectId, ref: "Publisher", required: true},
     platforms: {
         type: [
             {
