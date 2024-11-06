@@ -103,12 +103,14 @@ export const getFilteredGames = async (req: Request, res: Response) => {
         const genre = req.query.genre as string;
         const publisher = req.query.publisher as string;
         const platform = req.query.platform as string;
+        const year = parseInt(req.query.year as string, 10);
+        const maxYear = parseInt(req.query.maxYear as string, 10);
 
-        if (!gameTitle && !genre && !publisher && !platform) {
-            return res.status(400).json({ message: "At least one search parameter must be provided" });
+        if ((req.query.year && isNaN(year)) || (req.query.maxYear && isNaN(maxYear))) {
+            return res.status(400).json({ message: "Year and maxYear must be valid integers" });
         }
 
-        const games = await GameService.getGameByParam(gameTitle, genre, publisher, platform);
+        const games = await GameService.getGameByParam(gameTitle, genre, publisher, platform, year, maxYear);
         if (games.length > 0) {
             res.status(200).json(games);
         } else {

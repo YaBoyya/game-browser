@@ -18,7 +18,7 @@ class GameService {
     async deleteAllGames(): Promise<void> {
         await Game.deleteMany({});
     }
-    async getGameByParam(gameTitle?: string, genreName?: string, publisherName?: string, platformName?: string): Promise<GameDTO[]> {
+    async getGameByParam(gameTitle?: string, genreName?: string, publisherName?: string, platformName?: string, year?: number, maxYear?: number): Promise<GameDTO[]> {
         const query: any = {};
 
         if (gameTitle) {
@@ -43,6 +43,21 @@ class GameService {
             const platform = await Platform.findOne({ name: { $regex: platformName, $options: "i" } }).exec();
             if (platform) {
                 query.platforms = { $elemMatch: { platform_id: platform._id } };
+            }
+        }
+
+        if (year) {
+            const startDate = new Date(year, 0, 1);
+            const endDate = new Date(year + 1, 0, 1);
+            query.release_date = { $gte: startDate, $lt: endDate };
+        }
+
+        if (maxYear) {
+            const endDate = new Date(maxYear + 1, 0, 1);
+            if (query.release_date) {
+                query.release_date.$lt = endDate;
+            } else {
+                query.release_date = { $lt: endDate };
             }
         }
 
