@@ -11,14 +11,12 @@ export const createPlatform = async (req: Request, res: Response) => {
             description: desc || null
         };
 
-        const createdPlatform =
-            await PlatformService.createPlatform(newPlatorm);
-        
+        const createdPlatform = await PlatformService.createPlatform(newPlatorm);
+
         res.status(201).json({
             message: "Platform created successfully",
             platform: createPlatform
         });
-
     } catch (error) {
         console.error("Error creating platform:", error);
         if (error instanceof Error) {

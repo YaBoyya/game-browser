@@ -43,33 +43,25 @@ const GameSchema: Schema = new Schema({
     created_at: {type: Date, default: Date.now}
 });
 
-GameSchema.statics.findByTitle = function (
-    title: string
-): Promise<GameEntity | null> {
+GameSchema.statics.findByTitle = function (title: string): Promise<GameEntity | null> {
     return this.findOne({
         title: new RegExp(title, "i")
     }).exec();
 };
 
-GameSchema.statics.findByPublisher = function (
-    publisherId: string
-): Promise<GameEntity[]> {
+GameSchema.statics.findByPublisher = function (publisherId: string): Promise<GameEntity[]> {
     return this.find({
         publisher_id: new Types.ObjectId(publisherId)
     }).exec();
 };
 
-GameSchema.statics.findByGenre = function (
-    genreId: ObjectId
-): Promise<GameEntity[]> {
+GameSchema.statics.findByGenre = function (genreId: ObjectId): Promise<GameEntity[]> {
     return this.find({
         genre_id: genreId
     }).exec();
 };
 
-GameSchema.statics.findByPlatform = function (
-    platformId: ObjectId
-): Promise<GameEntity[]> {
+GameSchema.statics.findByPlatform = function (platformId: ObjectId): Promise<GameEntity[]> {
     return this.find({
         "platforms.platform_id": platformId
     }).exec();

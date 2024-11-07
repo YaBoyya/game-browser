@@ -20,23 +20,16 @@ const PublisherSchema: Schema = new Schema({
     created_at: {type: Date, required: true}
 });
 
-PublisherSchema.statics.findByName = function (
-    name: string
-): Promise<PublisherEntity | null> {
+PublisherSchema.statics.findByName = function (name: string): Promise<PublisherEntity | null> {
     return this.findOne({
         name: new RegExp(name, "i")
     }).exec();
 };
 
-PublisherSchema.statics.findByNameExact = function (
-    name: string
-): Promise<PublisherEntity | null> {
+PublisherSchema.statics.findByNameExact = function (name: string): Promise<PublisherEntity | null> {
     return this.findOne({
         name: name
     }).exec();
 };
 
-export const Publisher = mongoose.model<PublisherEntity, PublisherModel>(
-    "Publisher",
-    PublisherSchema
-);
+export const Publisher = mongoose.model<PublisherEntity, PublisherModel>("Publisher", PublisherSchema);

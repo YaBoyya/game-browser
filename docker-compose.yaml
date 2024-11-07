@@ -1,8 +1,7 @@
 services:
   backend:
     container_name: Express
-    build:
-      ./backend
+    build: ./backend
     depends_on:
       - mongo
     restart: unless-stopped
@@ -16,8 +15,7 @@ services:
       - ./backend:/backend
   frontend:
     container_name: React
-    build:
-      ./frontend
+    build: ./frontend
     env_file:
       - ./.env
     ports:
@@ -38,7 +36,7 @@ services:
     ports:
       - "${MONGODB_LOCAL_PORT}:${MONGODB_DOCKER_PORT}"
     volumes:
-     - db:/data/db
+      - db:/data/db
 
 volumes:
   db:

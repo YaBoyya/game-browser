@@ -4,7 +4,7 @@ import connectDB from "./config/database";
 import gamesRoutes from "./routes/gamesRoutes";
 import platformRoutes from "./routes/platformRoutes";
 import userRoutes from "./routes/userRoutes";
-import authRoutes from "./routes/authRoutes"
+import authRoutes from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -20,7 +20,5 @@ app.use("/api/auth", authRoutes);
 
 app.listen(port, "0.0.0.0", () => {
     console.log(`[server]: Docker server is running at port: ${port}`);
-    console.log(
-        `[server]: Locally server should be available at http://localhost:${process.env.BACKEND_LOCAL_PORT}`
-    );
+    console.log(`[server]: Locally server should be available at http://localhost:${process.env.BACKEND_LOCAL_PORT}`);
 });

@@ -9,9 +9,7 @@ const connectDB = async (): Promise<void> => {
         const conn = await mongoose.connect(mongoURI as string, {
             autoCreate: true
         });
-        console.log(
-            `MongoDB Connected: ${conn.connection.host}:${conn.connection.port}`
-        );
+        console.log(`MongoDB Connected: ${conn.connection.host}:${conn.connection.port}`);
     } catch (error) {
         console.error(`Error: ${error}`);
         process.exit(1);

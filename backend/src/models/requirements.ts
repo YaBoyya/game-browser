@@ -23,7 +23,4 @@ const RequirementsSchema: Schema = new Schema({
     rec_storage: {type: String}
 });
 
-export const Requirements = mongoose.model<RequirementsEntity>(
-    "Requirements",
-    RequirementsSchema
-);
+export const Requirements = mongoose.model<RequirementsEntity>("Requirements", RequirementsSchema);

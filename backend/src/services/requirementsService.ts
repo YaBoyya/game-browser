@@ -2,9 +2,7 @@ import {RequirementsDTO} from "../dto/requirementsDTO";
 import {Requirements} from "../models/requirements";
 
 class RequirementsService {
-    async createRequirements(
-        requirementsData: Partial<RequirementsDTO>
-    ): Promise<RequirementsDTO> {
+    async createRequirements(requirementsData: Partial<RequirementsDTO>): Promise<RequirementsDTO> {
         const requirements = new Requirements(requirementsData);
         return await requirements.save();
     }
