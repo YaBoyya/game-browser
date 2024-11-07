@@ -7,7 +7,6 @@ import {
 
 const userRoutes = express.Router();
 
-// @ts-ignore
 userRoutes.post("/", createUser);
 userRoutes.get("/", getAllUsers);
 userRoutes.delete("/", deleteAllUsers);

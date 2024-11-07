@@ -39,7 +39,8 @@ export const createGame = async (req: Request, res: Response) => {
                         await PlatformService.createPlatform(platform);
                 }
                 return {
-                    platform_id: existingPlatform._id
+                    platform_id: existingPlatform._id,
+                    release_date: platformData.release_date
                 };
             })
         );

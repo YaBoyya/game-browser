@@ -3,7 +3,6 @@ import {createGame, getAllGames} from "../controllers/gameController";
 
 const gamesRoutes = express.Router();
 
-// @ts-ignore
 gamesRoutes.post("/", createGame);
 gamesRoutes.get("/", getAllGames);
 

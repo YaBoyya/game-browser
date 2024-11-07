@@ -1,6 +1,7 @@
-import mongoose, {Schema, Types} from "mongoose";
+import mongoose, {ObjectId, Schema, Types} from "mongoose";
 
 export interface UserEntity {
+    _id: ObjectId;
     username: string;
     email: string;
     password: string;
