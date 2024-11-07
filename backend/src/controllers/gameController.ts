@@ -120,3 +120,18 @@ export const getFilteredGames = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Server error: " + error });
     }
 };
+
+export const deleteGameById = async (req: Request, res: Response) => {
+    const gameId = req.query.gameId as string;
+
+    if (!gameId) {
+        return res.status(400).json({ message: "gameId cannot be empty" });
+    }
+
+    try {
+        await GameService.deleteGameById(gameId);
+        res.status(200).json({message: "Game deleted successfully"});
+    } catch (error) {
+        res.status(500).json({message: "Server error: " + error});
+    }
+}

@@ -3,6 +3,7 @@ import {Game} from "../models/game";
 import {Platform} from "../models/platform";
 import {Publisher} from "../models/publisher";
 import {Genre} from "../models/genre";
+import {Types} from "mongoose";
 
 class GameService {
     async createGame(gameData: Partial<GameDTO>): Promise<GameDTO> {
@@ -62,6 +63,13 @@ class GameService {
         }
 
         return await Game.find(query).populate('genre_id').populate('publisher_id').populate('platforms.platform_id').exec();
+    }
+
+    async deleteGameById(gameId: string): Promise<void> {
+        const result = await Game.findByIdAndDelete(gameId).exec();
+        if (!result) {
+            throw new Error("Game not found");
+        }
     }
 }
 
