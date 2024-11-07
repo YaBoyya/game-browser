@@ -1,10 +1,15 @@
-import express from "express";
-import {createGame, getAllGames} from "../controllers/gameController";
+import express, {Request, Response} from "express";
+import {createGame, deleteGameById, getAllGames, getFilteredGames, updateGame} from "../controllers/gameController";
 
 const gamesRoutes = express.Router();
 
-// @ts-ignore
 gamesRoutes.post("/", createGame);
 gamesRoutes.get("/", getAllGames);
+// @ts-ignore
+gamesRoutes.delete("/", deleteGameById);
+// @ts-ignore
+gamesRoutes.put("/", updateGame);
+// @ts-ignore
+gamesRoutes.get("/filter", getFilteredGames);
 
 export default gamesRoutes;

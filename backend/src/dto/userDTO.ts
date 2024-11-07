@@ -5,8 +5,8 @@ export interface UserDTO {
     username: string;
     email: string;
     password: string;
-    status: "active" | "inactive";
+    status: "active" | "inactive" | "banned";
     owned_games?: {game_id: string; added_date: Date}[];
     role: "admin" | "user";
-    created_at: Date;
+    created_at?: Date;
 }
