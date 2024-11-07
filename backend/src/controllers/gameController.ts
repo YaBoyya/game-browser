@@ -10,6 +10,7 @@ import PlatformService from "../services/platformService";
 import PublisherService from "../services/publisherService";
 import RequirementsService from "../services/requirementsService";
 import { Publisher } from '../models/publisher';
+import {GameDTO} from "../dto/gameDTO";
 
 export const createGame = async (req: Request, res: Response) => {
     try {
@@ -131,6 +132,22 @@ export const deleteGameById = async (req: Request, res: Response) => {
     try {
         await GameService.deleteGameById(gameId);
         res.status(200).json({message: "Game deleted successfully"});
+    } catch (error) {
+        res.status(500).json({message: "Server error: " + error});
+    }
+}
+
+export const updateGame = async (req: Request, res: Response) => {
+    const gameId = req.query.gameId as string;
+    const updateData = req.body as Partial<GameDTO>;
+
+    if (!gameId) {
+        return res.status(400).json({message: "gameId cannot be empty"});
+    }
+
+    try {
+        const updatedGame = await GameService.updateGame(gameId, updateData);
+        res.status(200).json({message: "Game updated successfully", game: updatedGame});
     } catch (error) {
         res.status(500).json({message: "Server error: " + error});
     }

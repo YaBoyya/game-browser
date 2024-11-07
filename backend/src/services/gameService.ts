@@ -71,6 +71,24 @@ class GameService {
             throw new Error("Game not found");
         }
     }
+
+    async updateGame(gameId: string, updateData: Partial<GameDTO>): Promise<GameDTO | null> {
+        if (!Types.ObjectId.isValid(gameId)) {
+            throw new Error("Invalid gameId");
+        }
+
+        const updatedGame = await Game.findByIdAndUpdate(
+            gameId,
+            { $set: updateData },
+            { new: true, runValidators: true }
+        ).exec();
+
+        if (!updatedGame) {
+            throw new Error("Game not found");
+        }
+
+        return updatedGame;
+    }
 }
 
 export default new GameService();
