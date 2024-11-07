@@ -1,26 +1,21 @@
 import {Request, Response} from "express";
+import {GameDTO} from "../dto/gameDTO";
 import {GenreDTO} from "../dto/genreDTO";
+import PlatformDataDTO from "../dto/platformDataDTO";
 import {PlatformDTO} from "../dto/platformDTO";
 import {PublisherDTO} from "../dto/publisherDTO";
 import {Genre} from "../models/genre";
 import {Platform} from "../models/platform";
+import {Publisher} from "../models/publisher";
 import GameService from "../services/gameService";
 import GenreService from "../services/genreService";
 import PlatformService from "../services/platformService";
 import PublisherService from "../services/publisherService";
 import RequirementsService from "../services/requirementsService";
-import { Publisher } from '../models/publisher';
-import {GameDTO} from "../dto/gameDTO";
 
 export const createGame = async (req: Request, res: Response) => {
     try {
-        const {
-            gameData,
-            genreData,
-            platformData,
-            requirementsData,
-            publisherData
-        } = req.body;
+        const {gameData, genreData, platformData, requirementsData, publisherData} = req.body;
 
         let genre: GenreDTO | null = await Genre.findOne({
             name: genreData.name
@@ -30,14 +25,12 @@ export const createGame = async (req: Request, res: Response) => {
         }
 
         const platforms = await Promise.all(
-            platformData.map(async (platform: Partial<PlatformDTO>) => {
-                let existingPlatform: PlatformDTO | null =
-                    await Platform.findOne({
-                        name: platform.name
-                    }).exec();
+            platformData.map(async (platform: Partial<PlatformDataDTO>) => {
+                let existingPlatform: PlatformDTO | null = await Platform.findOne({
+                    name: platform.name
+                }).exec();
                 if (!existingPlatform) {
-                    existingPlatform =
-                        await PlatformService.createPlatform(platform);
+                    existingPlatform = await PlatformService.createPlatform(platform);
                 }
                 return {
                     platform_id: existingPlatform._id,
@@ -48,8 +41,7 @@ export const createGame = async (req: Request, res: Response) => {
 
         let requirementsId;
         if (requirementsData) {
-            const requirements =
-                await RequirementsService.createRequirements(requirementsData);
+            const requirements = await RequirementsService.createRequirements(requirementsData);
             requirementsId = requirements._id;
         }
 
@@ -88,7 +80,6 @@ export const createGame = async (req: Request, res: Response) => {
     }
 };
 
-
 export const getAllGames = async (_req: Request, res: Response) => {
     try {
         const games = await GameService.getAllGames();
@@ -108,17 +99,17 @@ export const getFilteredGames = async (req: Request, res: Response) => {
         const maxYear = parseInt(req.query.maxYear as string, 10);
 
         if ((req.query.year && isNaN(year)) || (req.query.maxYear && isNaN(maxYear))) {
-            return res.status(400).json({ message: "Year and maxYear must be valid integers" });
+            return res.status(400).json({message: "Year and maxYear must be valid integers"});
         }
 
         const games = await GameService.getGameByParam(gameTitle, genre, publisher, platform, year, maxYear);
         if (games.length > 0) {
             res.status(200).json(games);
         } else {
-            res.status(404).json({ message: "Game not found" });
+            res.status(404).json({message: "Game not found"});
         }
     } catch (error) {
-        res.status(500).json({ message: "Server error: " + error });
+        res.status(500).json({message: "Server error: " + error});
     }
 };
 
@@ -126,7 +117,7 @@ export const deleteGameById = async (req: Request, res: Response) => {
     const gameId = req.query.gameId as string;
 
     if (!gameId) {
-        return res.status(400).json({ message: "gameId cannot be empty" });
+        return res.status(400).json({message: "gameId cannot be empty"});
     }
 
     try {
@@ -135,7 +126,7 @@ export const deleteGameById = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({message: "Server error: " + error});
     }
-}
+};
 
 export const updateGame = async (req: Request, res: Response) => {
     const gameId = req.query.gameId as string;
@@ -151,4 +142,4 @@ export const updateGame = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({message: "Server error: " + error});
     }
-}
+};
