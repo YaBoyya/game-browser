@@ -4,7 +4,6 @@ WORKDIR /frontend
 COPY package.json .
 RUN npm install
 
-COPY Dockerfile ./Dockerfile
 COPY eslint.config.js ./eslint.config.js
 COPY index.html ./index.html
 COPY node_modules ./node_modules
