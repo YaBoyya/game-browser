@@ -81,3 +81,26 @@ export const addGameToUserList = async (req: Request, res: Response) => {
         res.status(500).json({message: "Server error: " + error});
     }
 }
+
+export const getUserOwnedGames = async (req: Request, res: Response) => {
+    const userId = req.params.userId as string;
+
+    try {
+        const games = await UserService.getUserOwnedGames(userId);
+        res.status(200).json(games);
+    } catch (error) {
+        res.status(500).json({message: "Server error: " + error});
+    }
+}
+
+export const deleteUserOwnedGame = async (req: Request, res: Response) => {
+    const userId = req.params.userId as string;
+    const gameId = req.params.gameId as string;
+
+    try {
+        const user = await UserService.deleteGameFromUserList(userId, gameId);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({message: "Server error: " + error});
+    }
+}

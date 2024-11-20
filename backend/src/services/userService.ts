@@ -69,6 +69,32 @@ class UserService {
         await user.save();
         return user;
     }
+
+    async getUserOwnedGames(userId: string) {
+        const user = await User.findById(userId).populate('owned_games.game_id').exec();
+        if (!user) {
+            throw new Error("User not found");
+        }
+        return user.owned_games;
+    }
+
+    async deleteGameFromUserList(userId: string, gameId: string) {
+        const user = await User.findById(userId).exec();
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const gameExists = user.owned_games?.some(g => g.game_id.toString() === gameId);
+        if (!gameExists) {
+            throw new Error("Game not found in owned games");
+        }
+
+        user.owned_games = user.owned_games?.filter(g => g.game_id.toString() !== gameId);
+
+        await user.save();
+        return user;
+    }
+
 }
 
 export default new UserService();
