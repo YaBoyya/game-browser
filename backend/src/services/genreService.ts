@@ -11,8 +11,16 @@ class GenreService {
         return await Genre.find().exec();
     }
 
-    async deleteAllGenres(): Promise<void> {
-        await Genre.deleteMany({});
+    async deleteGenreById(genreId: string): Promise<void> {
+        await Genre.findByIdAndDelete(genreId).exec();
+    }
+
+    async getGenreById(genreId: string): Promise<GenreDTO | null> {
+        return await Genre.findById(genreId).exec();
+    }
+
+    async getGenreByName(name: string): Promise<GenreDTO | null> {
+        return await Genre.findOne({ name: name }).exec();
     }
 }
 
