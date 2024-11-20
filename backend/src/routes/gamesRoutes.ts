@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express";
 import {createGame, deleteGameById, getAllGames, getFilteredGames, updateGame} from "../controllers/gameController";
+import {createPlatform} from "../controllers/platformController";
 
 const gamesRoutes = express.Router();
 
