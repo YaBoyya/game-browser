@@ -12,9 +12,16 @@ class PublisherService {
         return await Publisher.find().exec();
     }
 
-    async deleteAllPublishers(): Promise<void> {
-        await Publisher.deleteMany({});
+    async deletePublisherById(publisherId: string): Promise<void> {
+        await Publisher.findByIdAndDelete(publisherId).exec();
+    }
+
+    async getPublisherById(publisherId: string): Promise<PublisherDTO | null> {
+        return await Publisher.findById(publisherId).exec();
+    }
+
+    async getPublisherByName(name: string): Promise<PublisherDTO | null> {
+        return await Publisher.findOne({name: name}).exec();
     }
 }
-
 export default new PublisherService();
