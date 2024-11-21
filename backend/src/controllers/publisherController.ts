@@ -7,7 +7,8 @@ export const createPublisher = async (req: Request, res: Response) => {
 
         const existingPublisher = await PublisherService.getPublisherByName(name);
         if (existingPublisher) {
-            return res.status(400).json({message: "Publisher with the same name already exists"});
+            res.status(400).json({message: "Publisher with the same name already exists"});
+            return;
         }
 
         const newPublisher = {
@@ -32,7 +33,7 @@ export const createPublisher = async (req: Request, res: Response) => {
     }
 };
 
-export const getAllPublishers = async (req: Request, res: Response) => {
+export const getAllPublishers = async (_req: Request, res: Response) => {
     try {
         const publishers = await PublisherService.getAllPublishers();
         res.status(200).json(publishers);
@@ -47,7 +48,8 @@ export const deletePublisherById = async (req: Request, res: Response) => {
     try {
         const existingPublisher = await PublisherService.getPublisherById(publisherId);
         if (!existingPublisher) {
-            return res.status(404).json({message: "Publisher not found"});
+            res.status(404).json({message: "Publisher not found"});
+            return;
         }
 
         await PublisherService.deletePublisherById(publisherId);

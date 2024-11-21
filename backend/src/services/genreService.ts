@@ -20,7 +20,7 @@ class GenreService {
     }
 
     async getGenreByName(name: string): Promise<GenreDTO | null> {
-        return await Genre.findOne({ name: name }).exec();
+        return await Genre.findOne({name: name}).exec();
     }
 }
 

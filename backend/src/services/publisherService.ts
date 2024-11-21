@@ -21,7 +21,7 @@ class PublisherService {
     }
 
     async getPublisherByName(name: string): Promise<PublisherDTO | null> {
-        return await Publisher.findOne({ name: name }).exec();
+        return await Publisher.findOne({name: name}).exec();
     }
 }
 export default new PublisherService();

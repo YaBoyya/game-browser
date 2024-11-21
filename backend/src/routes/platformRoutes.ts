@@ -4,9 +4,7 @@ import {checkAdminRole} from "../middleware/authMiddleware";
 
 const platformRoutes = express.Router();
 
-// @ts-ignore
-platformRoutes.post("/",checkAdminRole, createPlatform);
+platformRoutes.post("/", checkAdminRole, createPlatform);
 platformRoutes.get("/", getAllPlatforms);
-// @ts-ignore
-platformRoutes.delete("/:platformId",checkAdminRole, deletePlaformById);
+platformRoutes.delete("/:platformId", checkAdminRole, deletePlaformById);
 export default platformRoutes;

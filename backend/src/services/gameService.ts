@@ -16,6 +16,10 @@ class GameService {
         return await Game.find().exec();
     }
 
+    async getGameById(id: string) {
+        return await Game.findById(id).exec();
+    }
+
     async deleteAllGames(): Promise<void> {
         await Game.deleteMany({});
     }

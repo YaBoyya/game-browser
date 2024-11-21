@@ -4,10 +4,8 @@ import {checkAdminRole} from "../middleware/authMiddleware";
 
 const publisherRoutes = express.Router();
 
-// @ts-ignore
-publisherRoutes.post("/",checkAdminRole, createPublisher);
+publisherRoutes.post("/", checkAdminRole, createPublisher);
 publisherRoutes.get("/", getAllPublishers);
-// @ts-ignore
-publisherRoutes.delete("/:id",checkAdminRole, deletePublisherById);
+publisherRoutes.delete("/:id", checkAdminRole, deletePublisherById);
 
 export default publisherRoutes;

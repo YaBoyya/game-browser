@@ -1,17 +1,12 @@
-import {UserEntity, User} from "../models/user";
 import {UserDTO} from "../dto/userDTO";
 import {Game} from "../models/game";
-import {Types} from "mongoose";
+import {User, UserEntity} from "../models/user";
 
 class UserService {
     async createUser(userData: Partial<UserDTO>): Promise<UserEntity> {
         userData.created_at = new Date(Date.now());
         const user = new User(userData);
         return await user.save();
-    }
-
-    async getAllUsers(): Promise<UserDTO[]> {
-        return await User.find().exec();
     }
 
     async deleteAllUsers(): Promise<void> {
@@ -25,18 +20,16 @@ class UserService {
     async deleteUserById(userId: string) {
         await User.findByIdAndDelete(userId).exec();
     }
-    async getUserByParam(
-        username?: string,
-        email?: string
-    ): Promise<UserDTO[]> {
+
+    async getUsers(username?: string, email?: string): Promise<UserDTO[]> {
         const query: any = {};
 
         if (username) {
-            query.username = { $regex: new RegExp(username, "i") };
+            query.username = {$regex: new RegExp(username, "i")};
         }
 
         if (email) {
-            query.email = { $regex: new RegExp(email, "i") };
+            query.email = {$regex: new RegExp(email, "i")};
         }
 
         return await User.find(query).exec();
@@ -53,7 +46,7 @@ class UserService {
             throw new Error("Game not found");
         }
 
-        const gameExists = user.owned_games?.some(g => g.game_id.toString() === gameId);
+        const gameExists = user.owned_games?.some((g) => g.game_id.toString() === gameId);
         if (gameExists) {
             throw new Error("Game already in owned games");
         }
@@ -71,7 +64,7 @@ class UserService {
     }
 
     async getUserOwnedGames(userId: string) {
-        const user = await User.findById(userId).populate('owned_games.game_id').exec();
+        const user = await User.findById(userId).populate("owned_games.game_id").exec();
         if (!user) {
             throw new Error("User not found");
         }
@@ -84,17 +77,16 @@ class UserService {
             throw new Error("User not found");
         }
 
-        const gameExists = user.owned_games?.some(g => g.game_id.toString() === gameId);
+        const gameExists = user.owned_games?.some((g) => g.game_id.toString() === gameId);
         if (!gameExists) {
             throw new Error("Game not found in owned games");
         }
 
-        user.owned_games = user.owned_games?.filter(g => g.game_id.toString() !== gameId);
+        user.owned_games = user.owned_games?.filter((g) => g.game_id.toString() !== gameId);
 
         await user.save();
         return user;
     }
-
 }
 
 export default new UserService();

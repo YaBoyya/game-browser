@@ -8,7 +8,8 @@ export const createPlatform = async (req: Request, res: Response) => {
 
         const existingPlatform = await PlatformService.getPlatformByName(name);
         if (existingPlatform) {
-            return res.status(400).json({message: "Platform with the same name already exists"});
+            res.status(400).json({message: "Platform with the same name already exists"});
+            return;
         }
 
         const newPlatform: PlatformDTO = {
@@ -47,7 +48,8 @@ export const deletePlaformById = async (req: Request, res: Response) => {
     try {
         const existingPlatform = await PlatformService.getPlatformById(platformId);
         if (!existingPlatform) {
-            return res.status(404).json({message: "Platform not found"});
+            res.status(404).json({message: "Platform not found"});
+            return;
         }
 
         await PlatformService.deletePlatformById(platformId);
@@ -55,5 +57,4 @@ export const deletePlaformById = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({message: "Server error: " + error});
     }
-}
-
+};
