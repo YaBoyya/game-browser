@@ -8,17 +8,25 @@ import {
     getUserById,
     getUserByParam, getUserOwnedGames
 } from "../controllers/userController";
+import {checkAdminRole} from "../middleware/authMiddleware";
 
 const userRoutes = express.Router();
 
-userRoutes.post("/", createUser);
-userRoutes.get("/", getAllUsers);
-userRoutes.delete("/", deleteAllUsers);
-userRoutes.get("/:userId", getUserById);
-userRoutes.delete("/:userId", deleteUserById);
-userRoutes.get("/filter/users", getUserByParam)
-userRoutes.post("/games", addGameToUserList);
-userRoutes.delete("/games/:userId/:gameId", deleteUserOwnedGame);
-userRoutes.get("/games/:userId",getUserOwnedGames)
+// @ts-ignore
+userRoutes.post("/", checkAdminRole,createUser);
+// @ts-ignore
+userRoutes.get("/", checkAdminRole, getAllUsers);
+// @ts-ignore
+userRoutes.delete("/",checkAdminRole, deleteAllUsers);
+// @ts-ignore
+userRoutes.get("/:userId",checkAdminRole, getUserById);
+// @ts-ignore
+userRoutes.delete("/:userId", checkAdminRole, deleteUserById);
+// @ts-ignore
+userRoutes.get("/filter/users", checkAdminRole,getUserByParam)
+
+userRoutes.post("/games/add", addGameToUserList);
+userRoutes.delete("/games/:gameId", deleteUserOwnedGame);
+userRoutes.get("/games/get",getUserOwnedGames)
 
 export default userRoutes;

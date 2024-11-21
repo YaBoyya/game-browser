@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import UserService from "../services/userService";
+import {getUserIdFromToken} from "../middleware/authMiddleware";
 
 export const createUser = async (req: Request, res: Response) => {
     try {
@@ -71,36 +72,37 @@ export const getUserByParam = async (req: Request, res: Response) => {
 }
 
 export const addGameToUserList = async (req: Request, res: Response) => {
-    const userId = req.query.userId as string;
-    const gameId = req.query.gameId as string;
-
     try {
+        const userId = getUserIdFromToken(req);
+        const gameId = req.query.gameId as string;
+
         const user = await UserService.addGameToUserList(userId, gameId);
         res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({message: "Server error: " + error});
+        res.status(500).json({ message: "Server error: " + error });
     }
-}
+};
 
 export const getUserOwnedGames = async (req: Request, res: Response) => {
-    const userId = req.params.userId as string;
-
     try {
+        const userId = getUserIdFromToken(req);
+        console.log(userId);
         const games = await UserService.getUserOwnedGames(userId);
+        console.log(games);
         res.status(200).json(games);
     } catch (error) {
-        res.status(500).json({message: "Server error: " + error});
+        res.status(500).json({ message: "Server error: " + error });
     }
 }
 
 export const deleteUserOwnedGame = async (req: Request, res: Response) => {
-    const userId = req.params.userId as string;
-    const gameId = req.params.gameId as string;
-
     try {
+        const userId = getUserIdFromToken(req);
+        const gameId = req.params.gameId as string;
+
         const user = await UserService.deleteGameFromUserList(userId, gameId);
         res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({message: "Server error: " + error});
+        res.status(500).json({ message: "Server error: " + error });
     }
-}
+};

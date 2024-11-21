@@ -22,12 +22,13 @@ export const generateToken = (user: UserEntity): string => {
 
 export const register = async (username: string, email: string, password: string): Promise<UserEntity | null> => {
     const hashedPassword = await hashPassword(password);
+    let role="admin";
     const newUser = new User({
         username,
         email,
         password: hashedPassword,
         status: "active",
-        role: "user",
+        role: role,
         created_at: new Date()
     });
 
