@@ -7,12 +7,20 @@ import genreRoutes from "./routes/genreRoutes";
 import platformRoutes from "./routes/platformRoutes";
 import publisherRoutes from "./routes/publisherRoutes";
 import userRoutes from "./routes/userRoutes";
-
+import cors from "cors";
 dotenv.config();
 
 const app: Express = express();
 const port = parseInt(process.env.BACKEND_DOCKER_PORT || "3000", 10);
 connectDB();
+
+app.use(
+    cors({
+        origin: process.env.ALLOWED_ORIGIN || "http://localhost:5173",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
 
 app.use(express.json());
 app.use("/api/users", userRoutes);
