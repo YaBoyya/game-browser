@@ -1,8 +1,9 @@
-// TODO type it
-function RenderForm({data, handleInput}: any) {
+import { RenderFormProps } from "../props";
+
+function RenderForm({data, handleInput}: RenderFormProps) {
   return (
     <>
-      {Object.keys(data).map((key, index) => (
+      {Object.keys(data).map((key: string, index) => (
         <div key={index} className="flex flex-col my-3">
           <label htmlFor={key}>{key[0].toUpperCase() + key.slice(1)}</label>
           <input
