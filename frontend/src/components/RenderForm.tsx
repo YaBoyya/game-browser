@@ -11,6 +11,7 @@ function RenderForm({data, handleInput}: any) {
             placeholder={`Your ${key}`}
             type={["email", "password"].includes(key) ? key : "text"}
             onChange={(event) => handleInput(event.target.value, key)}
+            value={data[key]}
           />
         </div>
       ))}

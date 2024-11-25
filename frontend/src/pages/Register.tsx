@@ -1,15 +1,19 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import FormWrapper from "../components/wrappers/FormWrapper";
+import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import RenderForm from "../components/RenderForm";
 import { REGISTERURL } from "../constants";
+import FormWrapper from "../components/wrappers/FormWrapper";
+import ErrorMessage from "../components/ErrorMessage";
 
 function Register() {
-  const [credentials, setCredentials] = useState({
+  const credentialsParams = {
     username: "",
     email: "",
     password: ""
-  })
+  };
+  const [credentials, setCredentials] = useState(credentialsParams);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleCredentialChange = (value: string, key: string) => {
     setCredentials({
@@ -19,18 +23,16 @@ function Register() {
   };
 
   // TODO type it
-  const onSubmit = async (event: any) => {
-    console.log("HI");
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setErrorMessage("");
+
     if(!Object.values(credentials).every((val: string) => val.trim() ? true : false)) {
-      // TODO error when data is empty
-      console.log(credentials)
+      setErrorMessage("Empty credentials")      
       return;
     }
 
     try {
-      // TODO clear errors
-      console.log("HI");
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000);
 
@@ -39,34 +41,34 @@ function Register() {
         headers: {
           "Content-Type": "application/json"
         },
+        body: JSON.stringify(credentials),
         signal: controller.signal
       });
 
       clearTimeout(timeout);
 
-      if (!response.ok) {
+      if (!response.ok && response.status !== 201) {
         throw new Error("Invalid credentials");
       }
-      const data = await response.json();
-      console.log(JSON.stringify(data));
+
+      navigate("/login");
     } catch (error: any) {
       if (error.name === "AbortError") {
-        console.error("Connection timed out");
-      } else if (error.name === "TypeError") {
-        console.error(error.message);
+        setErrorMessage("Connection time out")
       } else {
-        // perhaps error to input error messages
-        console.error(error.message);
+        setErrorMessage(error.message);
       }
-      // TODO add method to clear object data
+
+      setCredentials(credentialsParams);
     }
   }
 
   return(
     <FormWrapper label="Register">
+      <ErrorMessage msg={errorMessage} />
       <form onSubmit={onSubmit}>
         <RenderForm data={credentials} handleInput={handleCredentialChange} />
-        <small>Alredy have an account? <Link to="/login">Log In</Link></small>
+        <small>Already have an account? <Link to="/login">Log In</Link></small>
         <button
           className="text-white w-full p-3 bg-blue-400"
         >
