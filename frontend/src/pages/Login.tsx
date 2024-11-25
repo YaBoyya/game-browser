@@ -1,13 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import FormWrapper from "../components/wrappers/FormWrapper";
 import RenderForm from "../components/RenderForm";
+import ErrorMessage from "../components/ErrorMessage";
+import { COOKIE_TOKEN_NAME, LOGINURL } from "../constants";
+import { useCookies } from "react-cookie";
 
 function Login() {
-  const [credentials, setCredentials] = useState({
+  const credentialsParams = {
     username: "",
-    password: ""
-  })
+    password: "",
+  };
+  const [credentials, setCredentials] = useState(credentialsParams);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [, setCookie] = useCookies([COOKIE_TOKEN_NAME]);
+  const navigate = useNavigate();
 
   const handleCredentialChange = (value: string, key: string) => {
     setCredentials({
@@ -16,14 +23,56 @@ function Login() {
     });
   };
 
-  // TODO type it
-  const onSubmit = (event: any) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log("submit");
+    setErrorMessage("");
+
+    if(!Object.values(credentials).every((val: string) => val.trim() ? true : false)) {
+      setErrorMessage("Empty credentials")      
+      return;
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch(LOGINURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(credentials),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        throw new Error("Invalid credentials");
+      }
+      const data = await response.json();
+      console.log(data)
+
+      if (!data.token){
+        console.error("Token value is missing in the response");
+      }
+      
+      setCookie(COOKIE_TOKEN_NAME, data.token)
+      navigate("/");
+    } catch (error: any) {
+      if (error.name === "AbortError") {
+        setErrorMessage("Connection time out")
+      } else {
+        setErrorMessage(error.message);
+      }
+
+      setCredentials(credentialsParams);
+    }
   }
 
   return(
     <FormWrapper label="Login">
+      <ErrorMessage msg={errorMessage} />
       <form onSubmit={onSubmit}>
         <RenderForm data={credentials} handleInput={handleCredentialChange} />
         <small>Don't have an account? <Link to="/register">Register</Link></small>

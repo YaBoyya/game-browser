@@ -22,7 +22,6 @@ function Register() {
     });
   };
 
-  // TODO type it
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setErrorMessage("");
