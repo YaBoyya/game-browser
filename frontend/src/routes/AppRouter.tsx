@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BaseLayout from "../layouts/BaseLayout";
 import Home from "../pages/Home";
+import AuthRoute from "./AuthRoute";
 
 const AppRouter = createBrowserRouter([
     {
@@ -11,7 +12,7 @@ const AppRouter = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />
+                element: <AuthRoute><Home /></AuthRoute>
             },
             {
                 path: "/login",
