@@ -21,3 +21,7 @@ export interface RenderFormProps {
   data: CredentialsProps;
   handleInput: Function
 }
+
+export type CookieParam = {
+  [key: string]: string;
+};

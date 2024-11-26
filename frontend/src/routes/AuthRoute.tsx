@@ -1,36 +1,35 @@
 import { useCookies } from "react-cookie";
 import { COOKIE_TOKEN_NAME } from "../constants";
 import { jwtDecode } from "jwt-decode";
-import { Navigate } from "react-router-dom";
-import { ChildrenProps } from "../props";
+import { ChildrenProps, CookieParam } from "../props";
+import useLogout from "../hooks/useLogout";
+import { useEffect } from "react";
 
-const isTokenValid = () => {
-  const [cookies, ,removeCookie] = useCookies([COOKIE_TOKEN_NAME]);
+const isTokenValid = (cookies: CookieParam) => {
   const token = cookies[COOKIE_TOKEN_NAME]
+
+  if (!token) return false;
   try {
     const decodedToken = jwtDecode(token);
 
-    if (decodedToken?.exp && Date.now() < decodedToken.exp * 1000) {
-      return true;
-    }
-
-    throw new Error();
+    // checks if current date is lower than token expirys
+    return decodedToken?.exp && Date.now() < decodedToken.exp * 1000;
   } catch (e: any) {
-    removeCookie(COOKIE_TOKEN_NAME);
     return false;
   }
 }
 
 function AuthRoute({ children }: ChildrenProps) {
-  const tokenValidity = isTokenValid();
+  const [cookies] = useCookies([COOKIE_TOKEN_NAME]);
+  const logout = useLogout();
 
-  console.log(tokenValidity)
+  useEffect(() => {
+    if (!isTokenValid(cookies)) {
+      logout();
+    }
+  }, [logout, cookies]);
 
-  return(
-    <>
-      {tokenValidity ? children : <Navigate to="/login" />}
-    </>
-  );
+  return children;
 }
 
 export default AuthRoute;
