@@ -11,8 +11,16 @@ class PlatformService {
         return await Platform.find().exec();
     }
 
-    async deleteAllPlatforms(): Promise<void> {
-        await Platform.deleteMany({});
+    async deletePlatformById(platformId: string): Promise<void> {
+        await Platform.findByIdAndDelete(platformId);
+    }
+
+    async getPlatformByName(name: string): Promise<PlatformEntity | null> {
+        return await Platform.findOne({name: name}).exec();
+    }
+
+    async getPlatformById(platformId: string): Promise<PlatformEntity | null> {
+        return await Platform.findById(platformId).exec();
     }
 }
 

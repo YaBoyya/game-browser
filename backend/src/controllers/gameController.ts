@@ -99,7 +99,8 @@ export const getFilteredGames = async (req: Request, res: Response) => {
         const maxYear = parseInt(req.query.maxYear as string, 10);
 
         if ((req.query.year && isNaN(year)) || (req.query.maxYear && isNaN(maxYear))) {
-            return res.status(400).json({message: "Year and maxYear must be valid integers"});
+            res.status(400).json({message: "Year and maxYear must be valid integers"});
+            return;
         }
 
         const games = await GameService.getGameByParam(gameTitle, genre, publisher, platform, year, maxYear);
@@ -113,11 +114,27 @@ export const getFilteredGames = async (req: Request, res: Response) => {
     }
 };
 
+export const getGameById = async (req: Request, res: Response) => {
+    const gameId = req.params.gameId;
+
+    try {
+        const game = await GameService.getGameById(gameId);
+        if (game) {
+            res.status(200).json(game);
+        } else {
+            res.status(404).json({message: "Game not found"});
+        }
+    } catch (error) {
+        res.status(500).json({message: "Server error: " + error});
+    }
+};
+
 export const deleteGameById = async (req: Request, res: Response) => {
     const gameId = req.query.gameId as string;
 
     if (!gameId) {
-        return res.status(400).json({message: "gameId cannot be empty"});
+        res.status(400).json({message: "gameId cannot be empty"});
+        return;
     }
 
     try {
@@ -133,7 +150,8 @@ export const updateGame = async (req: Request, res: Response) => {
     const updateData = req.body as Partial<GameDTO>;
 
     if (!gameId) {
-        return res.status(400).json({message: "gameId cannot be empty"});
+        res.status(400).json({message: "gameId cannot be empty"});
+        return;
     }
 
     try {

@@ -1,4 +1,4 @@
-import {Response, NextFunction} from "express";
+import {Request, Response, NextFunction} from "express";
 import jwt from "jsonwebtoken";
 import {User} from "../models/user";
 import AuthRequest from "../types/AuthRequest";
@@ -28,6 +28,35 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
         }
 
         req.user = user;
+        next();
+    } catch (error) {
+        res.status(400).json({message: "Invalid token."});
+    }
+};
+
+export const checkAdminRole = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        res.status(401).json({message: "Access denied. No token provided."});
+        return;
+    }
+
+    const parts = authHeader.split(" ");
+    if (parts.length !== 2 || parts[0] !== "Bearer") {
+        res.status(401).json({message: "Access denied. Invalid token format."});
+        return;
+    }
+
+    const token = parts[1];
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET) as {id: string; role: string};
+        if (decoded.role !== "admin") {
+            res.status(403).json({message: "Access denied. Admins only."});
+            return;
+        }
+
         next();
     } catch (error) {
         res.status(400).json({message: "Invalid token."});
