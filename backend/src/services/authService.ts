@@ -22,26 +22,25 @@ export const generateToken = (user: UserEntity): string => {
 
 export const register = async (username: string, email: string, password: string): Promise<UserEntity | null> => {
     const hashedPassword = await hashPassword(password);
-    let role = "admin";
     const newUser = new User({
         username,
         email,
         password: hashedPassword,
         status: "active",
-        role: role,
+        role: "user",
         created_at: new Date()
     });
 
     return newUser.save();
 };
 
-export const authenticate = async (username: string, password: string): Promise<string | null> => {
+export const authenticate = async (username: string, password: string): Promise<{token: string, role: string} | null> => {
     const user = await User.findOne({username});
     if (!user || !(await verifyPassword(password, user.password))) return null;
 
     if (user.status !== "active") return null;
 
-    return generateToken(user);
+    return {token: generateToken(user), role: user.role};
 };
 
 export const verifyToken = (token: string): {id: string; role: string} | null => {

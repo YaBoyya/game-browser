@@ -34,10 +34,14 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const loginUser = async (req: Request, res: Response) => {
     const {username, password} = req.body;
-    const token = await authenticate(username, password);
+    const authInfo = await authenticate(username, password);
 
-    if (token) {
-        res.json({token});
+    if (authInfo) {
+        res.json({
+            user: username,
+            role: authInfo.role,
+            token: authInfo.token
+        });
     } else {
         res.status(401).json({message: "Invalid credentials or inactive user"});
     }
