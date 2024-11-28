@@ -25,38 +25,41 @@ class GameService {
     }
 
     async getGameByParam(
-        gameTitle?: string,
-        genreName?: string,
-        publisherName?: string,
-        platformName?: string,
+        title?: string,
+        genre?: string,
+        publisher?: string,
+        platform?: string,
         year?: number,
         maxYear?: number
     ): Promise<GameDTO[]> {
         const query: any = {};
 
-        if (gameTitle) {
-            query.title = {$regex: gameTitle, $options: "i"};
+        if (title) {
+            query.title = {$regex: title, $options: "i"};
         }
 
-        if (genreName) {
-            const genre = await Genre.findOne({name: {$regex: genreName, $options: "i"}}).exec();
-            if (genre) {
-                query.genre = genre._id;
+        if (genre) {
+            const foundGenre = await Genre.findOne({name: {$regex: genre, $options: "i"}}).exec();
+            if (!foundGenre) {
+                return [];
             }
+            query.genre = foundGenre._id;
         }
 
-        if (publisherName) {
-            const publisher = await Publisher.findOne({name: {$regex: publisherName, $options: "i"}}).exec();
-            if (publisher) {
-                query.publisher = publisher._id;
+        if (publisher) {
+            const foundPublisher = await Publisher.findOne({name: {$regex: publisher, $options: "i"}}).exec();
+            if (!foundPublisher) {
+                return [];
             }
+            query.publisher = foundPublisher._id;
         }
 
-        if (platformName) {
-            const platform = await Platform.findOne({name: {$regex: platformName, $options: "i"}}).exec();
-            if (platform) {
-                query.platforms = {$elemMatch: {platform: platform._id}};
+        if (platform) {
+            const foundPlatform = await Platform.findOne({name: {$regex: platform, $options: "i"}}).exec();
+            if (!foundPlatform) {
+                return [];
             }
+            query.platforms = {$elemMatch: {platform: foundPlatform._id}};
         }
 
         if (year) {
