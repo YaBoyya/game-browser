@@ -119,7 +119,6 @@ function GameCreate() {
             if (!response.ok) {
                 throw new Error(json.message);
             }
-            console.log(json);
             navigate("/");
         } catch (error: any) {
             if (error.name == "AbortError") {

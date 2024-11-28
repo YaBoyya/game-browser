@@ -1,8 +1,7 @@
 import {useState, useEffect} from "react";
 import ErrorMessage from "../components/ErrorMessage";
 import GameList from "../components/GameList";
-import {useCookies} from "react-cookie";
-import {COOKIE_TOKEN_NAME, GAMESURL, PUBLISHERSURL, PLATFORMSURL, GENRESURL, GAMESFILTERURL} from "../constants";
+import {GAMESURL, GAMESFILTERURL} from "../constants";
 
 function Games() {
     const [games, setGames] = useState([]);
@@ -45,7 +44,7 @@ function Games() {
 }
 
 function Fields({data, handleInput}) {
-    return Object.keys(data).map((key: string, index) => (
+    return Object.keys(data).map((key: string) => (
         <div key={key} className="flex flex-row items-center mb-3 justify-between">
             <label className="text-white mr-3" htmlFor={key}>
                 {key[0].toUpperCase() + key.slice(1) + ":"}

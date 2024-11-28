@@ -23,7 +23,7 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
         try {
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 5000);
-            const response = await fetch(USERGAMESURL + "/add?gameId=" + id, {
+            await fetch(USERGAMESURL + "/add?gameId=" + id, {
                 method: "POST",
                 headers: {
                     Authorization: "Bearer " + cookie.AUTH_TOKEN
@@ -31,8 +31,6 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
                 signal: controller.signal
             });
             clearTimeout(timeout);
-            const json = await response.json();
-            console.log(json);
             setAdded(true);
         } catch (error: any) {
             if (error.name === "AbortError") {
@@ -46,7 +44,7 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
         try {
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 5000);
-            const response = await fetch(USERGAMESURL + "/" + id, {
+            await fetch(USERGAMESURL + "/" + id, {
                 method: "DELETE",
                 headers: {
                     Authorization: "Bearer " + cookie.AUTH_TOKEN
@@ -55,8 +53,6 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
             });
             clearTimeout(timeout);
 
-            const json = await response.json();
-            console.log(json);
             setAdded(false);
         } catch (error: any) {
             if (error.name === "AbortError") {
@@ -79,7 +75,6 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
             });
             clearTimeout(timeout);
             const json = await response.json();
-            console.log(json);
             setAdded(!!json.find((x) => x.game._id == id));
         } catch (error: any) {
             if (error.name === "AbortError") {
@@ -93,7 +88,7 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
     if (!cookie[COOKIE_TOKEN_NAME]) return;
     useEffect(() => {
         getAdded();
-    }, []);
+    });
     if (added) {
         return (
             <button onClick={remove} className="text-center h-fit w-fit p-3 bg-blue-400 mb-4">
@@ -176,7 +171,6 @@ function GameInfo() {
             clearTimeout(timeout);
 
             const json = await response.json();
-            console.log(json);
             setInfo(json);
         } catch (error: any) {
             if (error.name === "AbortError") {
@@ -189,7 +183,7 @@ function GameInfo() {
     };
     useEffect(() => {
         getInfo();
-    }, []);
+    });
     return (
         <>
             <ErrorMessage msg={errorMessage} />

@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import FormWrapper from "../components/wrappers/FormWrapper";
 import RenderForm from "../components/RenderForm";
 import ErrorMessage from "../components/ErrorMessage";
-import {COOKIE_TOKEN_NAME, COOKIE_USER_NAME, LOGINURL} from "../constants";
+import {COOKIE_TOKEN_NAME, LOGINURL} from "../constants";
 import {useCookies} from "react-cookie";
 
 function Login() {
@@ -51,7 +51,6 @@ function Login() {
                 throw new Error("Invalid credentials");
             }
             const data = await response.json();
-            console.log(data);
 
             if (!data.token) {
                 console.error("Token value is missing in the response");

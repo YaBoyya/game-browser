@@ -34,7 +34,7 @@ function UserGames() {
     };
     useEffect(() => {
         getGames();
-    }, []);
+    });
     return (
         <div className="w-full min-h-screen">
             <ErrorMessage msg={errorMessage} />
