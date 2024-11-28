@@ -91,7 +91,7 @@ export const getAllGames = async (_req: Request, res: Response) => {
 
 export const getFilteredGames = async (req: Request, res: Response) => {
     try {
-        const gameTitle = req.query.gameTitle as string;
+        const title = req.query.title as string;
         const genre = req.query.genre as string;
         const publisher = req.query.publisher as string;
         const platform = req.query.platform as string;
@@ -103,7 +103,7 @@ export const getFilteredGames = async (req: Request, res: Response) => {
             return;
         }
 
-        const games = await GameService.getGameByParam(gameTitle, genre, publisher, platform, year, maxYear);
+        const games = await GameService.getGameByParam(title, genre, publisher, platform, year, maxYear);
         if (games.length > 0) {
             res.status(200).json(games);
         } else {
