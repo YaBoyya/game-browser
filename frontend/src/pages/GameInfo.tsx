@@ -31,7 +31,6 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
                 signal: controller.signal
             });
             clearTimeout(timeout);
-            setAdded(true);
         } catch (error: any) {
             if (error.name === "AbortError") {
                 setErrorMessage("Connection time out");
@@ -53,7 +52,6 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
             });
             clearTimeout(timeout);
 
-            setAdded(false);
         } catch (error: any) {
             if (error.name === "AbortError") {
                 setErrorMessage("Connection time out");
