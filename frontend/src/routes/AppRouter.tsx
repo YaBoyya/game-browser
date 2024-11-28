@@ -6,6 +6,8 @@ import Home from "../pages/Home";
 import AuthRoute from "./AuthRoute";
 import Games from "../pages/Games";
 import GameCreate from "../pages/GameCreate";
+import UserGames from "../pages/UserGames";
+import GameInfo from "../pages/GameInfo";
 
 const AppRouter = createBrowserRouter([
     {
@@ -14,9 +16,7 @@ const AppRouter = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: (
-                  <Home />
-                )
+                element: <Games />
             },
             {
                 path: "/login",
@@ -26,13 +26,17 @@ const AppRouter = createBrowserRouter([
                 path: "/register",
                 element: <Register />
             },
-            { 
-              path: "/games",
-              element: <Games />
+            {
+                path: "/create",
+                element: <GameCreate />
             },
             {
-                path: "/games/create",
-                element: <GameCreate />
+                path: "/games",
+                element: <UserGames />
+            },
+            {
+                path: "/game/:id",
+                element: <GameInfo />
             }
         ]
     }
