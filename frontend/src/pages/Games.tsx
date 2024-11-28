@@ -35,8 +35,8 @@ function Games() {
         <div className="w-full min-h-screen">
             <ErrorMessage msg={errorMessage} />
             <div className="flex flex-row">
-            <div className="w-3/4">
-                <GameList games={games} />
+                <div className="w-3/4">
+                    <GameList games={games} />
                 </div>
                 <GameFilter setGames={setGames} setErrorMessage={setErrorMessage} />
             </div>

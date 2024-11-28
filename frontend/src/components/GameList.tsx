@@ -4,11 +4,11 @@ function GameList({games}) {
     const even_color = "bg-blue-400";
     const odd_color = "bg-blue-500";
     return (
-      <>
+        <>
             {games.map((x, i) => (
                 <Game key={i} game={x} bg={i % 2 == 0 ? even_color : odd_color} />
             ))}
-      </>
+        </>
     );
 }
 
