@@ -45,8 +45,11 @@ function GameCreate() {
     const navigate = useNavigate();
 
     const handleDataChange = (value: string, key) => {
+      const isEmptyObject = (x) => Object.values(x).filter((x) => x != "").length == 0
+      const emptyObject = (x) => Object.entries(x).reduce((prev, y) => ({...prev, [y[0]]: ""}), {});
       if(typeof key.group != "undefined") {
-        const d = {
+        console.log(key, value);
+        const changedData = {
           ...data,
           [key.group]: [
             ...data[key.group].slice(0, +key.key.key),
@@ -54,20 +57,27 @@ function GameCreate() {
               ...data[key.group][key.key.key],
               [key.key.subkey]: value,
             },
-            ...data[key.group].slice(+key.key.key+1, data[key.group].length-2),
+            ...data[key.group].slice(+key.key.key+1),
+          ]
+        }
+        const filteredData = {
+          ...changedData,
+          [key.group]: [
+            ...changedData[key.group].filter((x)=>!isEmptyObject(x)),
+            emptyObject(changedData[key.group][0]),
           ]
         };
-        setData(d);
+        setData(filteredData);
         return;
       }
-      const d = {
+      const newData = {
         ...data,
         [key.key]: {
           ...data[key.key],
           [key.subkey]: value,
         },
       };
-      setData(d);
+      setData(newData);
       return;
     };
     const renameKeys = (obj, newKeys) => {
