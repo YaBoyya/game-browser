@@ -5,10 +5,10 @@ export interface GameEntity {
     title: string;
     description?: string;
     release_date: Date;
-    genre_id: ObjectId;
-    publisher_id: ObjectId;
-    platforms?: {platform_id: ObjectId; release_date: string}[];
-    requirements_id?: ObjectId;
+    genre: ObjectId;
+    publisher: ObjectId;
+    platforms?: {platform: ObjectId; release_date: string}[];
+    requirements?: ObjectId;
     created_at: Date;
 }
 
@@ -23,15 +23,12 @@ const GameSchema: Schema = new Schema({
     title: {type: String, required: true},
     description: {type: String},
     release_date: {type: Date, required: true},
-    genre_id: {type: Types.ObjectId, ref: "Genres", required: true},
-    publisher_id: {type: Types.ObjectId, ref: "Publisher", required: true},
+    genre: {type: Types.ObjectId, ref: "Genres", required: true},
+    publisher: {type: Types.ObjectId, ref: "Publisher", required: true},
     platforms: {
         type: [
             {
-                platform_id: {
-                    type: Types.ObjectId,
-                    ref: "Platforms"
-                },
+                platform: {type: Types.ObjectId, ref: "Platforms"},
                 release_date: {type: String, required: true}
             }
         ],
@@ -39,7 +36,7 @@ const GameSchema: Schema = new Schema({
         minlength: 1,
         default: []
     },
-    requirements_id: {type: Types.ObjectId, ref: "Requirements"},
+    requirements: {type: Types.ObjectId, ref: "Requirements"},
     created_at: {type: Date, default: Date.now}
 });
 
@@ -51,19 +48,19 @@ GameSchema.statics.findByTitle = function (title: string): Promise<GameEntity | 
 
 GameSchema.statics.findByPublisher = function (publisherId: string): Promise<GameEntity[]> {
     return this.find({
-        publisher_id: new Types.ObjectId(publisherId)
+        publisher: new Types.ObjectId(publisherId)
     }).exec();
 };
 
 GameSchema.statics.findByGenre = function (genreId: ObjectId): Promise<GameEntity[]> {
     return this.find({
-        genre_id: genreId
+        genre: genreId
     }).exec();
 };
 
 GameSchema.statics.findByPlatform = function (platformId: ObjectId): Promise<GameEntity[]> {
     return this.find({
-        "platforms.platform_id": platformId
+        "platforms.platform": platformId
     }).exec();
 };
 
