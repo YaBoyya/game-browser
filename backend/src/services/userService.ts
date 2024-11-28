@@ -43,7 +43,7 @@ class UserService {
 
         const game = await Game.findById(gameId).exec();
         if (!game) {
-            throw new Error("Game not found");
+            throw new Error("Game not found" + gameId);
         }
 
         const gameExists = user.owned_games?.some((g) => g.game.toString() === gameId);
@@ -64,7 +64,12 @@ class UserService {
     }
 
     async getUserOwnedGames(userId: string) {
-        const user = await User.findById(userId).populate("owned_games.game").exec();
+        const user = await User.findById(userId)
+            .populate({
+                path: "owned_games.game",
+                populate: [{path: "genre"}, {path: "publisher"}, {path: "platforms.platform"}, {path: "requirements"}]
+            })
+            .exec();
         if (!user) {
             throw new Error("User not found");
         }
