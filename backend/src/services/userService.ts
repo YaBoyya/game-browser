@@ -14,7 +14,7 @@ class UserService {
     }
 
     async getUserById(userId: string) {
-        return await User.findById(userId).exec();
+        return await User.findById(userId).populate("owned_games").exec();
     }
 
     async deleteUserById(userId: string) {
@@ -46,13 +46,13 @@ class UserService {
             throw new Error("Game not found");
         }
 
-        const gameExists = user.owned_games?.some((g) => g.game_id.toString() === gameId);
+        const gameExists = user.owned_games?.some((g) => g.game.toString() === gameId);
         if (gameExists) {
             throw new Error("Game already in owned games");
         }
 
         const newGame = {
-            game_id: game._id,
+            game: game._id,
             added_date: new Date()
         };
 
@@ -64,7 +64,7 @@ class UserService {
     }
 
     async getUserOwnedGames(userId: string) {
-        const user = await User.findById(userId).populate("owned_games.game_id").exec();
+        const user = await User.findById(userId).populate("owned_games.game").exec();
         if (!user) {
             throw new Error("User not found");
         }
@@ -77,12 +77,12 @@ class UserService {
             throw new Error("User not found");
         }
 
-        const gameExists = user.owned_games?.some((g) => g.game_id.toString() === gameId);
+        const gameExists = user.owned_games?.some((g) => g.game.toString() === gameId);
         if (!gameExists) {
             throw new Error("Game not found in owned games");
         }
 
-        user.owned_games = user.owned_games?.filter((g) => g.game_id.toString() !== gameId);
+        user.owned_games = user.owned_games?.filter((g) => g.game.toString() !== gameId);
 
         await user.save();
         return user;

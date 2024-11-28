@@ -6,7 +6,7 @@ export interface UserEntity {
     email: string;
     password: string;
     status: "active" | "inactive" | "banned";
-    owned_games: {game_id: mongoose.Schema.Types.ObjectId; added_date: Date}[];
+    owned_games: {game: mongoose.Schema.Types.ObjectId; added_date: Date}[];
     role: "admin" | "user";
     created_at?: Date;
 }
@@ -29,7 +29,7 @@ const UserSchema: Schema = new Schema({
     },
     owned_games: [
         {
-            game_id: {type: Types.ObjectId, ref: "Games", required: true},
+            game: {type: Types.ObjectId, ref: "Games", required: true},
             added_date: {type: Date}
         }
     ],
@@ -51,7 +51,7 @@ UserSchema.statics.findActiveUsers = function (): Promise<UserEntity[]> {
 
 UserSchema.statics.findByGameId = function (gameId: string): Promise<UserEntity[]> {
     return this.find({
-        "owned_games.game_id": new mongoose.Types.ObjectId(gameId)
+        "owned_games.game": new mongoose.Types.ObjectId(gameId)
     }).exec();
 };
 
