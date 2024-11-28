@@ -13,11 +13,21 @@ class GameService {
     }
 
     async getAllGames(): Promise<GameDTO[]> {
-        return await Game.find().populate("genre").populate("publisher").populate("platforms.platform").exec();
+        return await Game.find()
+            .populate("genre")
+            .populate("publisher")
+            .populate("platforms.platform")
+            .populate("requirements")
+            .exec();
     }
 
     async getGameById(id: string) {
-        return await Game.findById(id).populate("genre").populate("publisher").populate("platforms.platform").exec();
+        return await Game.findById(id)
+            .populate("genre")
+            .populate("publisher")
+            .populate("platforms.platform")
+            .populate("requirements")
+            .exec();
     }
 
     async deleteAllGames(): Promise<void> {
@@ -77,7 +87,12 @@ class GameService {
             }
         }
 
-        return await Game.find(query).populate("genre").populate("publisher").populate("platforms.platform").exec();
+        return await Game.find(query)
+            .populate("genre")
+            .populate("publisher")
+            .populate("platforms.platform")
+            .populate("requirements")
+            .exec();
     }
 
     async deleteGameById(gameId: string): Promise<void> {
