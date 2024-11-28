@@ -5,9 +5,9 @@ export interface GameDTO {
     title: string;
     description?: string;
     release_date: Date;
-    genre_id: ObjectId;
-    publisher_id: ObjectId;
-    platforms?: {platform_id: ObjectId; release_date: string}[];
-    requirements_id?: ObjectId;
+    genre: ObjectId;
+    publisher: ObjectId;
+    platforms?: {platform: ObjectId; release_date: string}[];
+    requirements?: ObjectId;
     created_at: Date;
 }

@@ -33,7 +33,7 @@ export const createGame = async (req: Request, res: Response) => {
                     existingPlatform = await PlatformService.createPlatform(platform);
                 }
                 return {
-                    platform_id: existingPlatform._id,
+                    platform: existingPlatform._id,
                     release_date: platform.release_date
                 };
             })
@@ -54,10 +54,10 @@ export const createGame = async (req: Request, res: Response) => {
 
         const newGameData = {
             ...gameData,
-            genre_id: genre._id,
+            genre: genre._id,
             platforms: platforms,
-            requirements_id: requirementsId,
-            publisher_id: publisher._id
+            requirements: requirementsId,
+            publisher: publisher._id
         };
 
         const createdGame = await GameService.createGame(newGameData);
