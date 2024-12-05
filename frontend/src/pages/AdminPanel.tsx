@@ -1,3 +1,4 @@
+import ErrorMessage from "../components/ErrorMessage";
 import {GAMESURL, GENRESURL, PUBLISHERSURL, PLATFORMSURL, USERSURL, COOKIE_TOKEN_NAME} from "../constants";
 import ResourceTable from "../components/ResourceTable";
 import {useState, useEffect, useRef} from "react";
@@ -242,12 +243,13 @@ function AdminPanel() {
     };
     useEffect(() => {
         changeData(Choice.GAMES);
-    }, []);
+    });
     useEffect(() => {
         fetchData();
     }, [data.choice]);
     return (
         <>
+            <ErrorMessage msg={errorMessage} />
             <div className="w-full">
                 <button className="text-white p-3 m-3 bg-blue-400" onClick={() => changeData(Choice.GAMES)}>
                     Games
