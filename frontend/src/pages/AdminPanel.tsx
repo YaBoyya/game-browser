@@ -243,7 +243,7 @@ function AdminPanel() {
     };
     useEffect(() => {
         changeData(Choice.GAMES);
-    });
+    }, []);
     useEffect(() => {
         fetchData();
     }, [data.choice]);
