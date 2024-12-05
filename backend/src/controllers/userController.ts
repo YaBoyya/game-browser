@@ -71,7 +71,7 @@ export const banUserById = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({message: "Server error: " + error});
     }
-}
+};
 
 export const unbanUserById = async (req: Request, res: Response) => {
     const userId = req.params.userId;
@@ -82,7 +82,29 @@ export const unbanUserById = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({message: "Server error: " + error});
     }
-}
+};
+
+export const makeUserAdmin = async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+
+    try {
+        await UserService.makeUserAdmin(userId);
+        res.status(200).json({message: "User granted admin priviliges successfully"});
+    } catch (error) {
+        res.status(500).json({message: "Server error: " + error});
+    }
+};
+
+export const revokeUserAdmin = async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+
+    try {
+        await UserService.revokeUserAdmin(userId);
+        res.status(200).json({message: "Revoked user's admin priviliges successfully"});
+    } catch (error) {
+        res.status(500).json({message: "Server error: " + error});
+    }
+};
 
 export const addGameToUserList = async (req: Request, res: Response) => {
     try {

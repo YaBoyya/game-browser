@@ -9,6 +9,8 @@ import {
     getUserById,
     getUserOwnedGames,
     getUsers,
+    makeUserAdmin,
+    revokeUserAdmin,
     unbanUserById
 } from "../controllers/userController";
 import {authenticate, checkAdminRole} from "../middleware/authMiddleware";
@@ -22,6 +24,8 @@ userRoutes.get("/:userId", authenticate, getUserById);
 userRoutes.delete("/:userId", checkAdminRole, deleteUserById);
 userRoutes.post("/:userId/ban", checkAdminRole, banUserById);
 userRoutes.post("/:userId/unban", checkAdminRole, unbanUserById);
+userRoutes.post("/:userId/makeAdmin", checkAdminRole, makeUserAdmin);
+userRoutes.post("/:userId/revokeAdmin", checkAdminRole, revokeUserAdmin);
 
 userRoutes.post("/games/add", authenticate, addGameToUserList);
 userRoutes.delete("/games/:gameId", authenticate, deleteUserOwnedGame);

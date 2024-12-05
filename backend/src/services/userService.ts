@@ -43,6 +43,14 @@ class UserService {
         await User.findByIdAndUpdate(userId, {status: "active"});
     }
 
+    async makeUserAdmin(userId: string) {
+        await User.findByIdAndUpdate(userId, {role: "admin"});
+    }
+
+    async revokeUserAdmin(userId: string) {
+        await User.findByIdAndUpdate(userId, {role: "user"});
+    }
+
     async addGameToUserList(userId: string, gameId: string) {
         const user = await User.findById(userId).exec();
         if (!user) {
