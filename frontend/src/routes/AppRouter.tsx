@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import {createBrowserRouter, Navigate} from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BaseLayout from "../layouts/BaseLayout";
@@ -7,6 +7,7 @@ import Games from "../pages/Games";
 import GameCreate from "../pages/GameCreate";
 import UserGames from "../pages/UserGames";
 import GameInfo from "../pages/GameInfo";
+import AdminPanel from "../pages/AdminPanel";
 
 const AppRouter = createBrowserRouter([
     {
@@ -24,6 +25,14 @@ const AppRouter = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register />
+            },
+            {
+                path: "/admin",
+                element: (
+                    <AuthRoute>
+                        <AdminPanel />
+                    </AuthRoute>
+                )
             },
             {
                 path: "/create",

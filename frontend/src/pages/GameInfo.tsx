@@ -51,7 +51,6 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
                 signal: controller.signal
             });
             clearTimeout(timeout);
-
         } catch (error: any) {
             if (error.name === "AbortError") {
                 setErrorMessage("Connection time out");
