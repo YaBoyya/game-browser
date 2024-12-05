@@ -16,25 +16,28 @@ function Button({data}) {
     const navigate = useNavigate();
     if (data.choice === Choice.GAMES)
         return (
-            <button className="text-white p-3 m-3 bg-blue-400 w-fit" onClick={() => navigate("/create")}>
+            <button className="text-white p-3 m-3 bg-blue-400 w-fit" onClick={() => navigate("/admin/create/game")}>
                 New Game
             </button>
         );
     if (data.choice === Choice.GENRES)
         return (
-            <button className="text-white p-3 m-3 bg-blue-400 w-fit" onClick={() => navigate("/create")}>
+            <button className="text-white p-3 m-3 bg-blue-400 w-fit" onClick={() => navigate("/admin/create/genre")}>
                 New Genre
             </button>
         );
     if (data.choice === Choice.PUBLISHERS)
         return (
-            <button className="text-white p-3 m-3 bg-blue-400 w-fit" onClick={() => navigate("/create")}>
+            <button
+                className="text-white p-3 m-3 bg-blue-400 w-fit"
+                onClick={() => navigate("/admin/create/publisher")}
+            >
                 New Publisher
             </button>
         );
     if (data.choice === Choice.PLATFORMS)
         return (
-            <button className="text-white p-3 m-3 bg-blue-400 w-fit" onClick={() => navigate("/create")}>
+            <button className="text-white p-3 m-3 bg-blue-400 w-fit" onClick={() => navigate("/admin/create/platform")}>
                 New Platform
             </button>
         );
