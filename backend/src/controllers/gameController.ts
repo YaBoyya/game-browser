@@ -130,7 +130,7 @@ export const getGameById = async (req: Request, res: Response) => {
 };
 
 export const deleteGameById = async (req: Request, res: Response) => {
-    const gameId = req.query.gameId as string;
+    const gameId = req.params.gameId;
 
     if (!gameId) {
         res.status(400).json({message: "gameId cannot be empty"});

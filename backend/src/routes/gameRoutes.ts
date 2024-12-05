@@ -13,7 +13,7 @@ const gameRoutes = express.Router();
 
 gameRoutes.post("/", checkAdminRole, createGame);
 gameRoutes.get("/", getAllGames);
-gameRoutes.delete("/", checkAdminRole, deleteGameById);
+gameRoutes.delete("/:gameId", checkAdminRole, deleteGameById);
 gameRoutes.put("/", checkAdminRole, updateGame);
 gameRoutes.get("/filter", getFilteredGames);
 gameRoutes.get("/:gameId", getGameById);
