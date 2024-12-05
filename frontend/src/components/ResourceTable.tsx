@@ -25,16 +25,18 @@ function ResourceTable({data}) {
                                 </div>
                             </td>
                         ))}
-                        <td className="h-12 text-sm min-w-24 px-3 overflow-hidden text-ellipsis text-center">
-                            {data.actions.map((y, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => y.handler(x)}
-                                    className="mx-1 text-white p-1 bg-blue-500 w-fit"
-                                >
-                                    {y.label}
-                                </button>
-                            ))}
+                        <td className="h-12 text-sm min-w-24 px-3 place-content-center items-center text-center flex flex-row">
+                            {data.actions
+                                .filter((y) => (typeof y.visibility === "undefined" ? true : y.visibility(x)))
+                                .map((y, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => y.handler(x)}
+                                        className="mx-1 text-white p-1 bg-blue-500 w-fit h-fit"
+                                    >
+                                        {y.label}
+                                    </button>
+                                ))}
                         </td>
                     </tr>
                 ))}

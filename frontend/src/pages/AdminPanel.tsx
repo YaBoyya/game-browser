@@ -96,8 +96,31 @@ function AdminPanel() {
             setData(latestData.current);
         }
     };
+    const userAction = (action, id) => async () => {
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 5000);
+            const response = await fetch(USERSURL + "/" + id + "/" + action, {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + cookie.AUTH_TOKEN
+                },
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+            if (!response.ok) throw new Error("Ban error");
+            fetchData();
+        } catch (error: any) {
+            if (error.name === "AbortError") {
+                setErrorMessage("Connection time out");
+            } else {
+                setErrorMessage(error.message);
+            }
+            setData(latestData.current);
+        }
+    };
     const fetchData = () => {
-        switch (data.choice) {
+        switch (latestData.current.choice) {
             case Choice.GAMES:
                 fetcher(GAMESURL)();
                 break;
@@ -120,8 +143,6 @@ function AdminPanel() {
         switch (choice) {
             case Choice.GAMES:
                 latestData.current = {
-                    choice,
-                    values: [],
                     actions: [
                         {
                             label: "Delete",
@@ -134,8 +155,6 @@ function AdminPanel() {
                 break;
             case Choice.GENRES:
                 latestData.current = {
-                    choice,
-                    values: [],
                     actions: [
                         {
                             label: "Delete",
@@ -148,8 +167,6 @@ function AdminPanel() {
                 break;
             case Choice.PUBLISHERS:
                 latestData.current = {
-                    choice,
-                    values: [],
                     actions: [
                         {
                             label: "Delete",
@@ -162,8 +179,6 @@ function AdminPanel() {
                 break;
             case Choice.PLATFORMS:
                 latestData.current = {
-                    choice,
-                    values: [],
                     actions: [
                         {
                             label: "Delete",
@@ -176,8 +191,6 @@ function AdminPanel() {
                 break;
             case Choice.USERS:
                 latestData.current = {
-                    choice,
-                    values: [],
                     actions: [
                         {
                             label: "Delete",
@@ -185,14 +198,43 @@ function AdminPanel() {
                                 deleter(USERSURL + "/" + x._id, x._id)();
                             }
                         },
-                        {label: "Ban", handler: (x) => {}},
-                        {label: "UnBan", handler: (x) => {}},
-                        {label: "Admin", handler: (x) => {}},
-                        {label: "UnAdmin", handler: (x) => {}}
+                        {
+                            label: "Ban",
+                            visibility: (x) => x.status === "active",
+                            handler: (x) => {
+                                userAction("ban", x._id)();
+                            }
+                        },
+                        {
+                            label: "UnBan",
+                            visibility: (x) => x.status !== "active",
+                            handler: (x) => {
+                                userAction("unban", x._id)();
+                            }
+                        },
+                        {
+                            label: "Admin",
+                            visibility: (x) => x.role !== "admin",
+                            handler: (x) => {
+                                userAction("makeAdmin", x._id)();
+                            }
+                        },
+                        {
+                            label: "UnAdmin",
+                            visibility: (x) => x.role == "admin",
+                            handler: (x) => {
+                                userAction("revokeAdmin", x._id)();
+                            }
+                        }
                     ]
                 };
                 break;
         }
+        latestData.current = {
+            ...latestData.current,
+            choice,
+            values: []
+        };
         setData(latestData.current);
     };
     useEffect(() => {
