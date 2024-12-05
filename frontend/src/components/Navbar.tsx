@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {COOKIE_TOKEN_NAME} from "../constants";
+import {COOKIE_TOKEN_NAME, COOKIE_ROLE_NAME} from "../constants";
 import {useCookies} from "react-cookie";
 import useLogout from "../hooks/useLogout";
 
@@ -25,7 +25,14 @@ function Navbar() {
         <div className="flex flex-row z-10 justify-between p-3 align-center w-screen h-20 bg-blue-300 sticky top-0 overflow-hidden">
             <Page link="/" name="Game Browser" />
             <div className="flex-row flex">
-                {cookie.AUTH_TOKEN ? (
+                {cookie[COOKIE_ROLE_NAME] == "admin" ? (
+                    <>
+                        <Page link="/admin/" name="Admin Panel" />
+                    </>
+                ) : (
+                    <></>
+                )}
+                {cookie[COOKIE_TOKEN_NAME] ? (
                     <>
                         <Page link="/games/" name="My Games" />
                         <Logout />

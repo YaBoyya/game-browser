@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import FormWrapper from "../components/wrappers/FormWrapper";
 import RenderForm from "../components/RenderForm";
 import ErrorMessage from "../components/ErrorMessage";
-import {COOKIE_TOKEN_NAME, LOGINURL} from "../constants";
+import {COOKIE_TOKEN_NAME, COOKIE_ROLE_NAME, LOGINURL} from "../constants";
 import {useCookies} from "react-cookie";
 
 function Login() {
@@ -13,7 +13,7 @@ function Login() {
     };
     const [credentials, setCredentials] = useState(credentialsParams);
     const [errorMessage, setErrorMessage] = useState<string>("");
-    const [, setCookie] = useCookies([COOKIE_TOKEN_NAME]);
+    const [, setCookie] = useCookies([COOKIE_TOKEN_NAME, COOKIE_ROLE_NAME]);
     const navigate = useNavigate();
 
     const handleCredentialChange = (value: string, key: string) => {
@@ -57,6 +57,7 @@ function Login() {
             }
 
             setCookie(COOKIE_TOKEN_NAME, data.token);
+            setCookie(COOKIE_ROLE_NAME, data.role);
             navigate("/");
         } catch (error: any) {
             if (error.name === "AbortError") {
