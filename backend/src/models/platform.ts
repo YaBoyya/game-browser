@@ -1,4 +1,5 @@
 import mongoose, {ObjectId, Schema} from "mongoose";
+import {Game} from "./game";
 
 export interface PlatformEntity {
     _id: ObjectId;
@@ -39,5 +40,19 @@ PlatformSchema.statics.findMultipleByNames = function (names: string[]): Promise
         name: {$in: names}
     }).exec();
 };
+
+PlatformSchema.pre("findOneAndDelete", async function (next) {
+    const platformId = this.getQuery()._id;
+
+    try {
+        await Game.updateMany({"platforms.platform": platformId}, {$pull: {platforms: {platform: platformId}}});
+        next();
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(`Error while cleaning up platform references: ${error.message}`);
+            next(error);
+        }
+    }
+});
 
 export const Platform = mongoose.model<PlatformEntity, PlatformModel>("Platforms", PlatformSchema);

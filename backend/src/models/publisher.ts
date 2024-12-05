@@ -1,4 +1,5 @@
 import mongoose, {Document, ObjectId, Schema} from "mongoose";
+import {Game} from "./game";
 
 export interface PublisherEntity extends Document {
     _id: ObjectId;
@@ -31,5 +32,19 @@ PublisherSchema.statics.findByNameExact = function (name: string): Promise<Publi
         name: name
     }).exec();
 };
+
+PublisherSchema.pre("findOneAndDelete", async function (next) {
+    const publisherId = this.getQuery()._id;
+
+    try {
+        await Game.updateMany({publisher: publisherId}, {$unset: {publisher: ""}});
+        next();
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(`Error while cleaning up publisher references: ${error.message}`);
+            next(error);
+        }
+    }
+});
 
 export const Publisher = mongoose.model<PublisherEntity, PublisherModel>("Publisher", PublisherSchema);
