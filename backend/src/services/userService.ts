@@ -35,6 +35,14 @@ class UserService {
         return await User.find(query).exec();
     }
 
+    async banUserById(userId: string) {
+        await User.findByIdAndUpdate(userId, {status: "banned"});
+    }
+
+    async unbanUserById(userId: string) {
+        await User.findByIdAndUpdate(userId, {status: "active"});
+    }
+
     async addGameToUserList(userId: string, gameId: string) {
         const user = await User.findById(userId).exec();
         if (!user) {

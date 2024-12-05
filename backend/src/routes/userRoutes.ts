@@ -1,13 +1,15 @@
 import express from "express";
 import {
     addGameToUserList,
+    banUserById,
     createUser,
     deleteAllUsers,
     deleteUserById,
     deleteUserOwnedGame,
     getUserById,
+    getUserOwnedGames,
     getUsers,
-    getUserOwnedGames
+    unbanUserById
 } from "../controllers/userController";
 import {authenticate, checkAdminRole} from "../middleware/authMiddleware";
 
@@ -18,6 +20,8 @@ userRoutes.get("/", checkAdminRole, getUsers);
 userRoutes.delete("/", checkAdminRole, deleteAllUsers);
 userRoutes.get("/:userId", authenticate, getUserById);
 userRoutes.delete("/:userId", checkAdminRole, deleteUserById);
+userRoutes.post("/:userId/ban", checkAdminRole, banUserById);
+userRoutes.post("/:userId/unban", checkAdminRole, unbanUserById);
 
 userRoutes.post("/games/add", authenticate, addGameToUserList);
 userRoutes.delete("/games/:gameId", authenticate, deleteUserOwnedGame);
