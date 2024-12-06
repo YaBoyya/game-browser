@@ -4,7 +4,7 @@ import PlatformService from "../services/platformService";
 
 export const createPlatform = async (req: Request, res: Response) => {
     try {
-        const {name, desc} = req.body;
+        const {name, description} = req.body;
 
         const existingPlatform = await PlatformService.getPlatformByName(name);
         if (existingPlatform) {
@@ -14,7 +14,7 @@ export const createPlatform = async (req: Request, res: Response) => {
 
         const newPlatform: PlatformDTO = {
             name: name,
-            description: desc || null
+            description: description || null
         };
 
         const createdPlatform = await PlatformService.createPlatform(newPlatform);

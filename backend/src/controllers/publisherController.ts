@@ -3,7 +3,7 @@ import PublisherService from "../services/publisherService";
 
 export const createPublisher = async (req: Request, res: Response) => {
     try {
-        const {name, desc, established} = req.body;
+        const {name, description, established} = req.body;
 
         const existingPublisher = await PublisherService.getPublisherByName(name);
         if (existingPublisher) {
@@ -13,7 +13,7 @@ export const createPublisher = async (req: Request, res: Response) => {
 
         const newPublisher = {
             name: name,
-            description: desc || null,
+            description: description || null,
             established: new Date(established)
         };
 
