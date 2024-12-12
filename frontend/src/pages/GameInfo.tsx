@@ -85,7 +85,7 @@ function FavouritesButton({cookie, id, setErrorMessage}) {
     if (!cookie[COOKIE_TOKEN_NAME]) return;
     useEffect(() => {
         getAdded();
-    });
+    }, []);
     if (added) {
         return (
             <button onClick={remove} className="text-center h-fit w-fit p-3 bg-blue-400 mb-4">
@@ -180,7 +180,7 @@ function GameInfo() {
     };
     useEffect(() => {
         getInfo();
-    });
+    }, []);
     return (
         <>
             <ErrorMessage msg={errorMessage} />
