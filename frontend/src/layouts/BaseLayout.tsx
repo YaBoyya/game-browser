@@ -5,7 +5,7 @@ function BaseLayout() {
     return (
         <>
             <Navbar />
-            <div className="flex flex-col items-center place-content-center min-h-screen">
+            <div className="flex flex-col items-center place-content-center min-h-full my-4">
                 <Outlet />
             </div>
         </>

@@ -3,7 +3,7 @@ export const COOKIE_TOKEN_NAME = "AUTH_TOKEN";
 export const COOKIE_ROLE_NAME = "AUTH_ROLE";
 
 // endpoints
-const APIURL = "http://localhost:8080/api";
+const APIURL = "http://localhost:3000/api";
 export const LOGINURL = `${APIURL}/auth/login`;
 export const REGISTERURL = `${APIURL}/auth/register`;
 export const GAMESURL = `${APIURL}/games`;

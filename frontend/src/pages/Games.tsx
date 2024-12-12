@@ -31,7 +31,7 @@ function Games() {
         getGames();
     }, []);
     return (
-        <div className="w-full min-h-screen">
+        <div className="w-full min-h-full my-5">
             <ErrorMessage msg={errorMessage} />
             <div className="flex flex-row">
                 <div className="w-3/4">
@@ -52,7 +52,7 @@ function Fields({data, handleInput}) {
             <input
                 id={key}
                 className="px-3 py-2"
-                placeholder={key[0].toUpperCase() + key.slice(1)}
+                // placeholder={key[0].toUpperCase() + key.slice(1)}
                 type={key.toLowerCase().includes("year") ? "number" : "text"}
                 onChange={(event) => handleInput(event.target.value, key)}
                 value={data[key]}
@@ -66,14 +66,21 @@ function GameFilter({setGames, setErrorMessage}) {
         title: "",
         genre: "",
         publisher: "",
-        year: new Date().getFullYear()
+        year: undefined
     };
     const [filters, setFilters] = useState(filterParams);
     const handleInput = (value, key) => {
-        setFilters({
-            ...filters,
-            [key]: value
-        });
+        if (key === "year" && Number(value) < 1) {
+            setFilters((prevFilters) => ({
+                ...prevFilters,
+                [key]: 1
+            }));
+        } else {
+            setFilters((prevFilters) => ({
+                ...prevFilters,
+                [key]: value
+            }));
+        }
     };
     const removeEmpty = (obj) => {
         return Object.entries(obj)
@@ -107,8 +114,8 @@ function GameFilter({setGames, setErrorMessage}) {
         }
     };
     return (
-        <div className="flex-grow flex justify-center items-center">
-            <form onSubmit={onSubmit} className="bg-blue-500 h-fit w-fit p-6 m-3 flex flex-col">
+        <div className="flex-grow flex justify-center">
+            <form onSubmit={onSubmit} className="bg-blue-500 h-fit w-10/12 min-w-fit p-6 mx-3 mt-0 flex flex-col sticky top-[112px]">
                 <Fields data={filters} handleInput={handleInput} />
                 <button className="text-white w-32 p-2 bg-blue-400 mt-3 self-end">Search</button>
             </form>
